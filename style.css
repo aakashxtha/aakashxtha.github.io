@@ -171,12 +171,14 @@ button {
 
 .loader {
     text-align: center;
+    max-width: 300px;
 }
 
 .spinner {
     width: 50px;
     height: 50px;
     animation: spin 2s linear infinite;
+    margin: 0 auto;
 }
 
 .spinner-path {
@@ -212,6 +214,34 @@ button {
     font-size: 1.125rem;
     letter-spacing: 1px;
     animation: pulse 1.5s infinite;
+}
+
+.loader-progress {
+    margin-top: 1.5rem;
+    width: 100%;
+    height: 4px;
+    background-color: rgba(79, 70, 229, 0.2);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.loader-progress-bar {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(to right, var(--primary), var(--accent));
+    animation: progress 1.8s ease-in-out forwards;
+}
+
+@keyframes progress {
+    0% {
+        width: 0;
+    }
+    50% {
+        width: 70%;
+    }
+    100% {
+        width: 100%;
+    }
 }
 
 @keyframes pulse {
@@ -267,7 +297,8 @@ button {
 .molecule-bg,
 .binary-bg,
 .dna-strand-bg,
-.data-flow-bg {
+.data-flow-bg,
+.hero-particles {
     position: absolute;
     top: 0;
     left: 0;
@@ -276,6 +307,13 @@ button {
     z-index: var(--z-back);
     opacity: 0.05;
     pointer-events: none;
+}
+
+.hero-particles {
+    opacity: 0.2;
+    background-image: 
+        radial-gradient(circle at 20% 30%, rgba(79, 70, 229, 0.15), transparent 70%),
+        radial-gradient(circle at 80% 70%, rgba(96, 165, 250, 0.1), transparent 50%);
 }
 
 /* ===== Header & Navigation ===== */
@@ -455,7 +493,7 @@ button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.75rem 1.5rem;
+    padding: 0.875rem 1.75rem;
     font-weight: 500;
     border-radius: 0.5rem;
     transition: all var(--transition-normal);
@@ -471,7 +509,7 @@ button {
 .btn-primary {
     background: linear-gradient(135deg, var(--primary), var(--primary-dark));
     color: white;
-    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
+    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.25);
 }
 
 .btn-primary::before {
@@ -509,6 +547,7 @@ button {
     background-color: transparent;
     color: var(--primary-light);
     border: 2px solid var(--primary);
+    padding: 0.75rem 1.75rem;
 }
 
 .btn-outline:hover {
@@ -571,57 +610,15 @@ button {
     max-width: 600px;
 }
 
-.glitch {
-    position: relative;
-    display: inline-block;
+.hero-text h1 {
+    font-size: clamp(3rem, 6vw, 5rem);
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
 }
 
-.glitch span {
+.hero-text h1 span {
     display: block;
-}
-
-.glitch::before, 
-.glitch::after {
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-
-.glitch::before {
-    left: -2px;
-    text-shadow: 2px 0 var(--accent);
-    animation: glitch-effect 3s infinite linear alternate-reverse;
-}
-
-.glitch::after {
-    left: 2px;
-    text-shadow: -2px 0 var(--primary-light);
-    animation: glitch-effect 2s infinite linear alternate-reverse;
-}
-
-@keyframes glitch-effect {
-    0% {
-        clip-path: inset(47% 0 36% 0);
-    }
-    5% {
-        clip-path: inset(16% 0 59% 0);
-    }
-    10% {
-        clip-path: inset(75% 0 23% 0);
-    }
-    15% {
-        clip-path: inset(46% 0 3% 0);
-    }
-    20% {
-        clip-path: inset(23% 0 42% 0);
-    }
-    /* ...and so on with more random values */
-    100% {
-        clip-path: inset(63% 0 15% 0);
-    }
 }
 
 .gradient-text {
@@ -635,31 +632,34 @@ button {
 
 @keyframes gradient-shift {
     0% {
-        background-position: 0 0;
+        background-position: 0% 50%;
     }
     50% {
-        background-position: 100% 0;
+        background-position: 100% 50%;
     }
     100% {
-        background-position: 0 0;
+        background-position: 0% 50%;
     }
 }
 
 .hero-text p {
-    font-size: clamp(1.1rem, 2vw, 1.25rem);
+    font-size: clamp(1.125rem, 2vw, 1.35rem);
     color: var(--text-gray);
-    margin-bottom: 2rem;
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+    max-width: 550px;
 }
 
-.highlighted {
+.molecular-dynamics {
     position: relative;
     color: var(--primary-light);
-    font-weight: 500;
+    font-weight: 600;
     display: inline-block;
-    padding: 0 0.25rem;
+    padding: 0 4px;
+    z-index: 1;
 }
 
-.highlighted::after {
+.molecular-dynamics::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -669,7 +669,7 @@ button {
     background-color: var(--primary);
     opacity: 0.2;
     border-radius: 4px;
-    z-index: var(--z-back);
+    z-index: -1;
 }
 
 .hero-buttons {
@@ -731,10 +731,63 @@ button {
     position: relative;
 }
 
+/* Profile Photo Styling */
+.profile-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: 160px;
+    height: 160px;
+}
+
+.profile-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    filter: drop-shadow(0 0 20px rgba(79, 70, 229, 0.5));
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.profile-frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 3px solid transparent;
+    border-radius: 50%;
+    background-image: linear-gradient(to right, var(--primary), var(--accent), var(--primary));
+    background-origin: border-box;
+    background-clip: border-box;
+    pointer-events: none;
+    animation: rotate 10s linear infinite;
+}
+
 .protein-container {
     width: 320px;
     height: 320px;
     position: relative;
+    filter: drop-shadow(0 0 20px rgba(79, 70, 229, 0.3));
+    animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
 }
 
 #protein-canvas {
@@ -782,15 +835,15 @@ button {
 }
 
 .tech-pill {
-    padding: 0.35rem 0.75rem;
-    background-color: var(--primary-bg);
+    background-color: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(79, 70, 229, 0.3);
     color: var(--primary-light);
+    font-weight: 600;
+    padding: 0.35rem 0.75rem;
     border-radius: 9999px;
     font-size: 0.75rem;
-    font-weight: 600;
-    white-space: nowrap;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(4px);
 }
 
 .scroll-indicator {
@@ -1404,6 +1457,7 @@ button {
     border: 1px solid var(--border-color);
     box-shadow: var(--shadow-lg);
     padding: 0.25rem;
+    position: relative;
 }
 
 .contact-card::before {
@@ -1593,6 +1647,42 @@ button {
     resize: vertical;
 }
 
+/* Error state for form */
+.form-group.error .form-control {
+    border-color: #ef4444;
+}
+
+.form-group.error .form-label {
+    color: #ef4444;
+}
+
+.error-message {
+    color: #ef4444;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Success message for form */
+.success-message {
+    text-align: center;
+    padding: 2rem;
+}
+
+.success-message svg {
+    color: var(--accent-green);
+    margin: 0 auto 1rem;
+    display: block;
+}
+
+.success-message h3 {
+    color: var(--accent-green);
+    margin-bottom: 1rem;
+}
+
+.success-message p {
+    color: var(--text-gray);
+}
+
 @media screen and (min-width: 768px) {
     .contact-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -1737,24 +1827,6 @@ button {
 .reveal-element.visible {
     opacity: 1;
     transform: translateY(0);
-}
-
-.text-reveal {
-    display: inline-block;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: textReveal 0.8s forwards;
-}
-
-.text-reveal:nth-child(1) { animation-delay: 0.5s; }
-.text-reveal:nth-child(2) { animation-delay: 0.7s; }
-.text-reveal:nth-child(3) { animation-delay: 0.9s; }
-
-@keyframes textReveal {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 /* ===== Utility Classes ===== */
