@@ -1,227 +1,438 @@
+// =====  Main JavaScript for Interactive Portfolio =====
+
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Feather icons
-    feather.replace();
-    
-    // DOM Elements
-    const loadingScreen = document.getElementById('loading-screen');
-    const mainNav = document.getElementById('main-nav');
-    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-    const mobileNav = document.getElementById('mobile-nav');
+    // Initialize variables
+    const loader = document.querySelector('.loader-wrapper');
+    const body = document.querySelector('body');
+    const header = document.querySelector('.header');
+    const menuToggle = document.querySelector('.menu-toggle');
+    const mobileNav = document.querySelector('.mobile-nav');
     const navLinks = document.querySelectorAll('.nav-link');
     const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
-    const scrollIndicator = document.getElementById('scroll-indicator');
-    const sections = document.querySelectorAll('section');
+    const scrollIndicator = document.querySelector('.scroll-indicator');
+    const cursorFollower = document.querySelector('.cursor-follower');
+    const backToTop = document.getElementById('back-to-top');
     const revealElements = document.querySelectorAll('.reveal-element');
-    const customCursor = document.getElementById('custom-cursor');
-    const particlesCanvas = document.getElementById('particles-canvas');
-    const proteinCanvas = document.getElementById('protein-canvas');
+    const hover3dItems = document.querySelectorAll('.hover3d');
+    const magnetElements = document.querySelectorAll('.magnet');
     const contactForm = document.getElementById('contact-form');
-    
-    // Loading animation
-    setTimeout(() => {
-        loadingScreen.style.opacity = "0";
+
+    // ===== Loading Animation =====
+    window.addEventListener('load', function() {
         setTimeout(() => {
-            loadingScreen.style.visibility = "hidden";
-        }, 1000);
-    }, 2000);
-    
-    // Mobile menu toggle
-    mobileMenuBtn.addEventListener('click', () => {
-        mobileNav.classList.toggle('active');
+            loader.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            animateHeroElements();
+        }, 1500);
     });
-    
-    // Smooth scrolling for navigation links
-    function scrollToSection(element) {
-        const sectionId = element.getAttribute('data-section');
-        const section = document.getElementById(sectionId);
-        
-        if (section) {
-            const offset = 70; // Height of fixed navbar
-            const sectionTop = section.offsetTop - offset;
-            
-            window.scrollTo({
-                top: sectionTop,
-                behavior: 'smooth'
-            });
-            
-            // Close mobile menu if open
-            mobileNav.classList.remove('active');
-        }
+
+    function animateHeroElements() {
+        const heroElements = document.querySelectorAll('.fade-in, .fade-in-delayed');
+        heroElements.forEach(el => {
+            el.style.opacity = '1';
+        });
     }
-    
-    // Add click events to nav links
+
+    // ===== Mobile Menu Toggle =====
+    menuToggle.addEventListener('click', function() {
+        this.classList.toggle('active');
+        mobileNav.classList.toggle('active');
+        
+        if (mobileNav.classList.contains('active')) {
+            body.style.overflow = 'hidden';
+        } else {
+            body.style.overflow = 'auto';
+        }
+    });
+
+    // ===== Smooth Scrolling Navigation =====
+    function smoothScroll(target, duration) {
+        const targetElement = document.querySelector(target);
+        const targetPosition = targetElement.offsetTop - 80;
+        const startPosition = window.pageYOffset;
+        const distance = targetPosition - startPosition;
+        let startTime = null;
+
+        function animation(currentTime) {
+            if (startTime === null) startTime = currentTime;
+            const timeElapsed = currentTime - startTime;
+            const run = ease(timeElapsed, startPosition, distance, duration);
+            window.scrollTo(0, run);
+            if (timeElapsed < duration) requestAnimationFrame(animation);
+        }
+
+        // Easing function
+        function ease(t, b, c, d) {
+            t /= d / 2;
+            if (t < 1) return c / 2 * t * t + b;
+            t--;
+            return -c / 2 * (t * (t - 2) - 1) + b;
+        }
+
+        requestAnimationFrame(animation);
+    }
+
+    // Add click event to all navigation links
     navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            scrollToSection(link);
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = this.getAttribute('href');
+            smoothScroll(target, 800);
         });
     });
-    
+
     mobileNavLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            scrollToSection(link);
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = this.getAttribute('href');
+            menuToggle.classList.remove('active');
+            mobileNav.classList.remove('active');
+            body.style.overflow = 'auto';
+            smoothScroll(target, 800);
         });
     });
-    
-    // Add click events to hero buttons
-    const actionButtons = document.querySelectorAll('[data-section]');
-    actionButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            scrollToSection(button);
-        });
+
+    // ===== Scroll Events =====
+    window.addEventListener('scroll', function() {
+        const scrollPosition = window.scrollY;
+        
+        // Header background effect on scroll
+        if (scrollPosition > 50) {
+            header.classList.add('scrolled');
+            scrollIndicator.style.opacity = '0';
+        } else {
+            header.classList.remove('scrolled');
+            scrollIndicator.style.opacity = '1';
+        }
+        
+        // Back to top button visibility
+        if (scrollPosition > 500) {
+            backToTop.classList.add('visible');
+        } else {
+            backToTop.classList.remove('visible');
+        }
+        
+        // Update active navigation link based on scroll position
+        updateActiveNavLink();
+        
+        // Reveal elements on scroll
+        revealOnScroll();
     });
-    
-    // Scroll handling
-    window.addEventListener('scroll', () => {
-        const scrollY = window.scrollY;
+
+    // Update active navigation link based on scroll position
+    function updateActiveNavLink() {
+        const sections = document.querySelectorAll('section');
+        const scrollPosition = window.scrollY;
         
-        // Navbar background on scroll
-        if (scrollY > 20) {
-            mainNav.classList.add('scrolled');
-        } else {
-            mainNav.classList.remove('scrolled');
-        }
-        
-        // Hide scroll indicator when scrolled
-        if (scrollY > 100) {
-            scrollIndicator.style.opacity = "0";
-        } else {
-            scrollIndicator.style.opacity = "1";
-        }
-        
-        // Check which section is visible and update active nav link
         sections.forEach(section => {
-            const sectionTop = section.offsetTop - 100;
+            const sectionTop = section.offsetTop - 150;
             const sectionHeight = section.offsetHeight;
             const sectionId = section.getAttribute('id');
             
-            if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
                 navLinks.forEach(link => {
                     link.classList.remove('active');
-                    if (link.getAttribute('data-section') === sectionId) {
+                    if (link.getAttribute('href') === `#${sectionId}`) {
                         link.classList.add('active');
                     }
                 });
                 
                 mobileNavLinks.forEach(link => {
                     link.classList.remove('active');
-                    if (link.getAttribute('data-section') === sectionId) {
+                    if (link.getAttribute('href') === `#${sectionId}`) {
                         link.classList.add('active');
                     }
                 });
             }
         });
-        
-        // Reveal elements on scroll
+    }
+
+    // Reveal elements when they enter the viewport
+    function revealOnScroll() {
         revealElements.forEach(element => {
             const elementTop = element.getBoundingClientRect().top;
-            const windowHeight = window.innerHeight;
+            const elementVisible = 150;
             
-            if (elementTop < windowHeight - 100) {
+            if (elementTop < window.innerHeight - elementVisible) {
                 element.classList.add('visible');
             }
         });
+    }
+
+    // Back to top button click event
+    backToTop.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-    
-    // Custom cursor
-    document.addEventListener('mousemove', (e) => {
-        if (window.innerWidth > 768) {
-            requestAnimationFrame(() => {
-                customCursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
-            });
-        }
-    });
-    
-    // Create animated background particles
-    if (particlesCanvas) {
-        const ctx = particlesCanvas.getContext('2d');
-        particlesCanvas.width = window.innerWidth;
-        particlesCanvas.height = window.innerHeight;
-        
-        // Resize canvas on window resize
-        window.addEventListener('resize', () => {
-            particlesCanvas.width = window.innerWidth;
-            particlesCanvas.height = window.innerHeight;
+
+    // ===== Custom Cursor Effect =====
+    if (window.innerWidth > 1024) {
+        document.addEventListener('mousemove', function(e) {
+            cursorFollower.style.opacity = '1';
+            const x = e.clientX;
+            const y = e.clientY;
+            
+            cursorFollower.style.transform = `translate(${x}px, ${y}px)`;
+            
+            // Check if cursor is over an interactive element
+            const target = e.target;
+            if (target.tagName === 'A' || 
+                target.tagName === 'BUTTON' || 
+                target.classList.contains('project-card') || 
+                target.classList.contains('skill-tag')) {
+                cursorFollower.style.width = '60px';
+                cursorFollower.style.height = '60px';
+                cursorFollower.style.opacity = '0.3';
+                cursorFollower.style.backgroundColor = 'rgba(99, 102, 241, 0.1)';
+            } else {
+                cursorFollower.style.width = '32px';
+                cursorFollower.style.height = '32px';
+                cursorFollower.style.opacity = '0.7';
+                cursorFollower.style.backgroundColor = 'transparent';
+            }
         });
         
-        // Particles array
-        const particles = [];
-        const particleCount = Math.min(50, Math.floor(window.innerWidth / 40)); // Adjust number based on screen size
-        
-        // Create particles
-        for (let i = 0; i < particleCount; i++) {
-            particles.push({
-                x: Math.random() * particlesCanvas.width,
-                y: Math.random() * particlesCanvas.height,
-                radius: Math.random() * 3 + 1,
-                speed: Math.random() * 0.5 + 0.2,
-                direction: Math.random() * Math.PI * 2,
-                opacity: Math.random() * 0.5 + 0.2,
-                color: i % 3 === 0 ? '#4F46E5' : (i % 3 === 1 ? '#818CF8' : '#60A5FA')
+        // Hide cursor when leaving the window
+        document.addEventListener('mouseleave', function() {
+            cursorFollower.style.opacity = '0';
+        });
+    }
+
+    // ===== 3D Hover Effect for Project Cards =====
+    if (window.matchMedia('(hover: hover)').matches) {
+        hover3dItems.forEach(item => {
+            const inner = item.querySelector('.hover3d-inner');
+            
+            item.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const angleY = (x - centerX) / centerX * 10;
+                const angleX = (centerY - y) / centerY * 10;
+                
+                inner.style.transform = `rotateY(${angleY}deg) rotateX(${angleX}deg) scale(1.05)`;
             });
+            
+            item.addEventListener('mouseleave', function() {
+                inner.style.transform = 'rotateY(0deg) rotateX(0deg) scale(1)';
+            });
+        });
+    }
+
+    // ===== Magnetic Effect for Skill Tags =====
+    if (window.matchMedia('(hover: hover)').matches) {
+        magnetElements.forEach(magnet => {
+            magnet.addEventListener('mousemove', function(e) {
+                const position = this.getBoundingClientRect();
+                const x = e.clientX - position.left - position.width / 2;
+                const y = e.clientY - position.top - position.height / 2;
+                
+                this.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+            });
+            
+            magnet.addEventListener('mouseleave', function() {
+                this.style.transform = 'translate(0, 0)';
+            });
+        });
+    }
+
+    // ===== Form Validation & Submission =====
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simple validation
+            const name = document.getElementById('name');
+            const email = document.getElementById('email');
+            const message = document.getElementById('message');
+            let isValid = true;
+            
+            if (name.value.trim() === '') {
+                showError(name, 'Please enter your name');
+                isValid = false;
+            } else {
+                clearError(name);
+            }
+            
+            if (email.value.trim() === '') {
+                showError(email, 'Please enter your email');
+                isValid = false;
+            } else if (!isValidEmail(email.value)) {
+                showError(email, 'Please enter a valid email');
+                isValid = false;
+            } else {
+                clearError(email);
+            }
+            
+            if (message.value.trim() === '') {
+                showError(message, 'Please enter your message');
+                isValid = false;
+            } else {
+                clearError(message);
+            }
+            
+            if (isValid) {
+                // Simulate form submission
+                const submitBtn = contactForm.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                
+                submitBtn.innerHTML = `
+                    <span>Sending...</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 12L12 22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 12H22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                `;
+                submitBtn.disabled = true;
+                
+                setTimeout(() => {
+                    // Show success message
+                    contactForm.innerHTML = `
+                        <div class="success-message">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18455 2.99721 7.13631 4.39828 5.49706C5.79935 3.85781 7.69279 2.71537 9.79619 2.24013C11.8996 1.7649 14.1003 1.98232 16.07 2.85999" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <h3>Message Sent!</h3>
+                            <p>Thank you for your message. I'll get back to you as soon as possible.</p>
+                        </div>
+                    `;
+                }, 2000);
+            }
+        });
+        
+        function showError(input, message) {
+            const formGroup = input.parentElement;
+            formGroup.classList.add('error');
+            
+            const errorMessage = document.createElement('div');
+            errorMessage.className = 'error-message';
+            errorMessage.textContent = message;
+            
+            if (!formGroup.querySelector('.error-message')) {
+                formGroup.appendChild(errorMessage);
+            }
         }
         
-        // Draw connections between particles
+        function clearError(input) {
+            const formGroup = input.parentElement;
+            formGroup.classList.remove('error');
+            
+            const errorMessage = formGroup.querySelector('.error-message');
+            if (errorMessage) {
+                formGroup.removeChild(errorMessage);
+            }
+        }
+        
+        function isValidEmail(email) {
+            const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+        }
+    }
+
+    // ===== Molecular Background Animation =====
+    const molecularBg = document.getElementById('molecular-bg');
+    if (molecularBg) {
+        const ctx = molecularBg.getContext('2d');
+        
+        // Set canvas size
+        function setCanvasSize() {
+            molecularBg.width = window.innerWidth;
+            molecularBg.height = window.innerHeight;
+        }
+        
+        setCanvasSize();
+        window.addEventListener('resize', setCanvasSize);
+        
+        // Create particles
+        const particles = [];
+        const particleCount = Math.min(80, Math.floor(window.innerWidth / 30));
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * molecularBg.width;
+                this.y = Math.random() * molecularBg.height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.radius = Math.random() * 2 + 1;
+                this.color = ['#4F46E5', '#818CF8', '#60A5FA'][Math.floor(Math.random() * 3)];
+                this.connections = [];
+            }
+            
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                // Bounce off walls
+                if (this.x < 0 || this.x > molecularBg.width) this.vx = -this.vx;
+                if (this.y < 0 || this.y > molecularBg.height) this.vy = -this.vy;
+            }
+            
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = 0.7;
+                ctx.fill();
+            }
+        }
+        
+        // Create initial particles
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+        
+        // Draw connections between nearby particles
         function drawConnections() {
-            particles.forEach((particle, i) => {
+            ctx.strokeStyle = '#4F46E5';
+            ctx.lineWidth = 0.5;
+            
+            for (let i = 0; i < particles.length; i++) {
                 for (let j = i + 1; j < particles.length; j++) {
-                    const other = particles[j];
-                    const distance = Math.sqrt(
-                        Math.pow(particle.x - other.x, 2) + 
-                        Math.pow(particle.y - other.y, 2)
-                    );
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
                     
-                    if (distance < 150) {
+                    if (distance < 120) {
+                        ctx.globalAlpha = 0.2 * (1 - distance / 120);
                         ctx.beginPath();
-                        ctx.strokeStyle = `rgba(79, 70, 229, ${0.15 * (1 - distance / 150)})`;
-                        ctx.lineWidth = 1;
-                        ctx.moveTo(particle.x, particle.y);
-                        ctx.lineTo(other.x, other.y);
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
                         ctx.stroke();
                     }
                 }
-            });
+            }
         }
         
-        // Animation loop for particles
-        function animateParticles() {
-            ctx.clearRect(0, 0, particlesCanvas.width, particlesCanvas.height);
+        // Animation loop
+        function animate() {
+            ctx.clearRect(0, 0, molecularBg.width, molecularBg.height);
             
             particles.forEach(particle => {
-                // Draw particle
-                ctx.beginPath();
-                ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-                ctx.fillStyle = particle.color;
-                ctx.globalAlpha = particle.opacity;
-                ctx.fill();
-                
-                // Update particle position
-                particle.x += Math.cos(particle.direction) * particle.speed;
-                particle.y += Math.sin(particle.direction) * particle.speed;
-                
-                // Change direction slightly
-                particle.direction += (Math.random() - 0.5) * 0.02;
-                
-                // Boundary check
-                if (particle.x < 0) particle.x = particlesCanvas.width;
-                if (particle.x > particlesCanvas.width) particle.x = 0;
-                if (particle.y < 0) particle.y = particlesCanvas.height;
-                if (particle.y > particlesCanvas.height) particle.y = 0;
+                particle.update();
+                particle.draw();
             });
             
             drawConnections();
-            requestAnimationFrame(animateParticles);
+            requestAnimationFrame(animate);
         }
         
-        animateParticles();
+        animate();
     }
-    
-    // Create protein visualization
+
+    // ===== Protein Visualization =====
+    const proteinCanvas = document.getElementById('protein-canvas');
     if (proteinCanvas) {
         const ctx = proteinCanvas.getContext('2d');
+        
+        // Set canvas size
         proteinCanvas.width = 320;
         proteinCanvas.height = 320;
         
+        // Create amino acids
         const aminoAcids = [];
         const bonds = [];
         const numAminoAcids = 20;
@@ -229,24 +440,24 @@ document.addEventListener('DOMContentLoaded', function() {
         const centerX = proteinCanvas.width / 2;
         const centerY = proteinCanvas.height / 2;
         
-        // Create a circular protein-like structure
+        // Create protein structure
         for (let i = 0; i < numAminoAcids; i++) {
             const angle = (i / numAminoAcids) * Math.PI * 2;
             const x = centerX + Math.cos(angle) * radius;
             const y = centerY + Math.sin(angle) * radius;
             
             aminoAcids.push({
-                x,
-                y,
-                radius: 6 + Math.random() * 6,
+                x: x,
+                y: y,
+                radius: 5 + Math.random() * 5,
                 color: ['#4F46E5', '#818CF8', '#60A5FA', '#34D399'][Math.floor(Math.random() * 4)],
                 pulseSpeed: 0.02 + Math.random() * 0.03,
                 pulsePhase: Math.random() * Math.PI * 2,
-                initialX: x,
-                initialY: y
+                originalX: x,
+                originalY: y
             });
             
-            // Create bonds between amino acids
+            // Create bonds between sequential amino acids
             if (i > 0) {
                 bonds.push({
                     a: i - 1,
@@ -255,34 +466,36 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // Close the loop
+        // Close the protein backbone
         bonds.push({
             a: numAminoAcids - 1,
             b: 0
         });
         
-        // Add some cross-links
+        // Add cross-linking bonds for tertiary structure
         for (let i = 0; i < 8; i++) {
             const a = Math.floor(Math.random() * numAminoAcids);
             let b = Math.floor(Math.random() * numAminoAcids);
-            while (Math.abs(a - b) < 3 || a === b) {
+            
+            // Ensure we don't duplicate bonds or connect adjacent amino acids
+            while (b === a || Math.abs(b - a) === 1 || Math.abs(b - a) === numAminoAcids - 1) {
                 b = Math.floor(Math.random() * numAminoAcids);
             }
             
             bonds.push({
-                a,
-                b
+                a: a,
+                b: b
             });
         }
         
-        let rotationAngle = 0;
+        let rotation = 0;
         
-        // Animation loop for protein
+        // Animation loop
         function animateProtein() {
             ctx.clearRect(0, 0, proteinCanvas.width, proteinCanvas.height);
             
             // Update rotation
-            rotationAngle += 0.005;
+            rotation += 0.005;
             
             // Draw bonds first
             bonds.forEach(bond => {
@@ -300,20 +513,22 @@ document.addEventListener('DOMContentLoaded', function() {
             // Draw amino acids
             aminoAcids.forEach((aa, i) => {
                 // Update position with rotation and pulsing
-                const angle = (i / numAminoAcids) * Math.PI * 2 + rotationAngle;
+                const angle = (i / numAminoAcids) * Math.PI * 2 + rotation;
                 const pulseRadius = radius + Math.sin(Date.now() * aa.pulseSpeed + aa.pulsePhase) * 10;
                 
                 aa.x = centerX + Math.cos(angle) * pulseRadius;
                 aa.y = centerY + Math.sin(angle) * pulseRadius;
                 
+                // Draw amino acid
                 ctx.beginPath();
                 ctx.arc(aa.x, aa.y, aa.radius, 0, Math.PI * 2);
                 ctx.fillStyle = aa.color;
                 ctx.fill();
                 
+                // Draw glow effect
                 ctx.beginPath();
                 ctx.arc(aa.x, aa.y, aa.radius + 2, 0, Math.PI * 2);
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
                 ctx.lineWidth = 1;
                 ctx.stroke();
             });
@@ -323,236 +538,80 @@ document.addEventListener('DOMContentLoaded', function() {
         
         animateProtein();
     }
-    
-    // Handle form submission (for demonstration - no actual backend)
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+
+    // ===== DNA Animation =====
+    function createDNAAnimation() {
+        const dnaHelix = document.querySelector('.dna-helix');
+        if (!dnaHelix) return;
+
+        // Create SVG for DNA helix
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('width', '100%');
+        svg.setAttribute('height', '100%');
+        svg.style.position = 'absolute';
+        svg.style.top = '0';
+        svg.style.left = '0';
+        svg.style.opacity = '0.1';
+        
+        // Create two strands
+        const strand1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        strand1.setAttribute('d', 'M0,50 Q25,0 50,50 T100,50');
+        strand1.setAttribute('stroke', '#4F46E5');
+        strand1.setAttribute('stroke-width', '2');
+        strand1.setAttribute('fill', 'none');
+        strand1.setAttribute('stroke-linecap', 'round');
+        strand1.style.transformOrigin = 'center';
+        strand1.style.animation = 'rotateDNA 15s linear infinite';
+        
+        const strand2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        strand2.setAttribute('d', 'M0,50 Q25,100 50,50 T100,50');
+        strand2.setAttribute('stroke', '#60A5FA');
+        strand2.setAttribute('stroke-width', '2');
+        strand2.setAttribute('fill', 'none');
+        strand2.setAttribute('stroke-linecap', 'round');
+        strand2.style.transformOrigin = 'center';
+        strand2.style.animation = 'rotateDNA 15s linear infinite';
+        
+        svg.appendChild(strand1);
+        svg.appendChild(strand2);
+        
+        // Create rungs
+        for (let i = 0; i < 5; i++) {
+            const x = 5 + i * 20;
             
-            // Get form values
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
+            const rung = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            rung.setAttribute('x1', x);
+            rung.setAttribute('y1', '30');
+            rung.setAttribute('x2', x);
+            rung.setAttribute('y2', '70');
+            rung.setAttribute('stroke', '#A5B4FC');
+            rung.setAttribute('stroke-width', '1.5');
+            rung.style.transformOrigin = 'center';
+            rung.style.animation = 'rotateDNA 15s linear infinite';
             
-            // Basic validation
-            if (!name || !email || !message) {
-                alert('Please fill out all fields');
-                return;
-            }
-            
-            // Simulate form submission
-            const submitBtn = contactForm.querySelector('.submit-btn');
-            const originalText = submitBtn.innerHTML;
-            
-            submitBtn.innerHTML = '<span>Sending...</span>';
-            submitBtn.disabled = true;
-            
-            setTimeout(() => {
-                alert('Thanks for your message! This is a demo form, so no actual message was sent.');
-                contactForm.reset();
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }, 1500);
-        });
-    }
-    
-    // Create background patterns for different sections
-    function createGridPattern() {
-        const gridBg = document.querySelector('.bg-grid');
-        if (gridBg) {
-            let html = '';
-            for (let i = 0; i < 12; i++) {
-                for (let j = 0; j < 12; j++) {
-                    html += `<div class="grid-cell" style="grid-row: ${i+1}; grid-column: ${j+1};"></div>`;
-                }
-            }
-            gridBg.innerHTML = html;
-            gridBg.style.display = 'grid';
-            gridBg.style.gridTemplateColumns = 'repeat(12, 1fr)';
-            gridBg.style.gridTemplateRows = 'repeat(12, 1fr)';
-            gridBg.style.height = '100%';
+            svg.appendChild(rung);
         }
+        
+        dnaHelix.appendChild(svg);
+        
+        // Create keyframe for DNA rotation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes rotateDNA {
+                0% { transform: rotateY(0deg); }
+                100% { transform: rotateY(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
     }
     
-    function createDnaPattern() {
-        const dnaBg = document.querySelector('.dna-bg');
-        if (dnaBg) {
-            let html = `<svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <path d="M0,50 Q25,25 50,50 T100,50" fill="none" stroke="#4F46E5" stroke-width="0.5" />
-                <path d="M0,50 Q25,75 50,50 T100,50" fill="none" stroke="#4F46E5" stroke-width="0.5" />`;
-                
-            for (let i = 0; i < 20; i++) {
-                html += `<g opacity="0.7">
-                    <line x1="${i * 5}" y1="0" x2="${i * 5}" y2="100" stroke="#4F46E5" stroke-width="0.2" />
-                    <line x1="${i * 5 + 2.5}" y1="0" x2="${i * 5 + 2.5}" y2="100" stroke="#60A5FA" stroke-width="0.2" />
-                </g>`;
-            }
-            
-            html += `</svg>`;
-            dnaBg.innerHTML = html;
-        }
+    createDNAAnimation();
+
+    // Initialize on page load
+    function init() {
+        revealOnScroll();
+        updateActiveNavLink();
     }
     
-    function createHexagonalPattern() {
-        const moleculeBg = document.querySelector('.molecule-bg');
-        if (moleculeBg) {
-            let html = `<svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">`;
-            
-            for (let rowIndex = 0; rowIndex < 5; rowIndex++) {
-                for (let colIndex = 0; colIndex < 6; colIndex++) {
-                    const xOffset = (rowIndex % 2) * 7.5;
-                    const x = 10 + colIndex * 15 + xOffset;
-                    const y = 10 + rowIndex * 13;
-                    
-                    html += `<polygon 
-                        points="
-                            ${x},${y}
-                            ${x+5},${y-5}
-                            ${x+10},${y}
-                            ${x+10},${y+10}
-                            ${x+5},${y+15}
-                            ${x},${y+10}
-                        "
-                        fill="none"
-                        stroke="#4F46E5"
-                        stroke-width="0.2"
-                    />`;
-                }
-            }
-            
-            html += `</svg>`;
-            moleculeBg.innerHTML = html;
-        }
-    }
-    
-    function createDataFlowPattern() {
-        const dataFlowBg = document.querySelector('.data-flow-bg');
-        if (dataFlowBg) {
-            let html = `<svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">`;
-            
-            for (let i = 0; i < 20; i++) {
-                const y = i * 5;
-                const cp1x = 20 + Math.random() * 20;
-                const cp1y = y + Math.random() * 5;
-                const cp2x = 40 + Math.random() * 20;
-                const cp2y = y - Math.random() * 5;
-                const cp3x = 60 + Math.random() * 30;
-                const cp3y = y + Math.random() * 5;
-                const cp4x = 90 + Math.random() * 10;
-                const cp4y = y - Math.random() * 5;
-                
-                html += `<path 
-                    d="M${Math.random() * 10},${y} C${cp1x},${cp1y} ${cp2x},${cp2y} ${cp3x},${cp3y} S${cp4x},${cp4y} 100,${y}"
-                    fill="none"
-                    stroke="#4F46E5"
-                    stroke-width="0.2"
-                />`;
-            }
-            
-            html += `</svg>`;
-            dataFlowBg.innerHTML = html;
-        }
-    }
-    
-    function createBinaryPattern() {
-        const binaryBg = document.querySelector('.binary-bg');
-        if (binaryBg) {
-            let html = '';
-            
-            for (let rowIndex = 0; rowIndex < 20; rowIndex++) {
-                let rowHtml = `<div style="display: flex; margin-top: ${rowIndex * 5}vh;">`;
-                
-                for (let colIndex = 0; colIndex < 40; colIndex++) {
-                    const binary = Math.random() > 0.5 ? '1' : '0';
-                    rowHtml += `<div style="margin-left: ${colIndex * 3}vw; opacity: ${Math.random()}; font-size: 10px; color: #4F46E5;">${binary}</div>`;
-                }
-                
-                rowHtml += `</div>`;
-                html += rowHtml;
-            }
-            
-            binaryBg.innerHTML = html;
-        }
-    }
-    
-    function createProteinPattern() {
-        const proteinBg = document.querySelector('.protein-bg');
-        if (proteinBg) {
-            let html = `<svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <path d="M10,50 C20,30 30,70 40,50 C50,30 60,70 70,50 C80,30 90,70 95,50" 
-                      fill="none" 
-                      stroke="#4F46E5" 
-                      stroke-width="0.5" />`;
-            
-            for (let i = 0; i < 9; i++) {
-                const x = 10 + i * 10;
-                const y = 50;
-                const sideY = i % 2 === 0 ? 60 : 40;
-                
-                html += `<g>
-                    <line 
-                      x1="${x}" 
-                      y1="${y}" 
-                      x2="${x}" 
-                      y2="${sideY}" 
-                      stroke="#60A5FA" 
-                      stroke-width="0.3" 
-                    />
-                    <circle 
-                      cx="${x}" 
-                      cy="${sideY}" 
-                      r="1" 
-                      fill="#60A5FA" 
-                    />
-                </g>`;
-            }
-            
-            html += `</svg>`;
-            proteinBg.innerHTML = html;
-        }
-    }
-    
-    function createGridBgPattern() {
-        const gridBg = document.querySelector('.grid-bg');
-        if (gridBg) {
-            let html = `<div class="grid-container" style="
-                display: grid;
-                grid-template-columns: repeat(20, 1fr);
-                grid-template-rows: repeat(20, 1fr);
-                height: 100%;
-                width: 100%;
-                opacity: 0.1;
-            ">`;
-            
-            for (let row = 0; row < 20; row++) {
-                for (let col = 0; col < 20; col++) {
-                    html += `<div style="border: 1px solid rgba(99, 102, 241, 0.2);"></div>`;
-                }
-            }
-            
-            html += `</div>`;
-            gridBg.innerHTML = html;
-        }
-    }
-    
-    // Initialize background patterns
-    createGridPattern();
-    createDnaPattern();
-    createGridBgPattern();
-    createProteinPattern();
-    createBinaryPattern();
-    createHexagonalPattern();
-    createDataFlowPattern();
-    
-    // Initialize first reveal of elements that are already in viewport
-    setTimeout(() => {
-        revealElements.forEach(element => {
-            const elementTop = element.getBoundingClientRect().top;
-            const windowHeight = window.innerHeight;
-            
-            if (elementTop < windowHeight - 100) {
-                element.classList.add('visible');
-            }
-        });
-    }, 100);
+    init();
 });
