@@ -4,1860 +4,789 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aakash Shrestha | Computational Biologist</title>
+    
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #6366f1;
-            --primary-light: #818cf8;
-            --primary-dark: #4f46e5;
-            --accent: #60a5fa;
-            --accent-green: #34d399;
-            --dark: #111827;
-            --darker: #0f172a;
-            --light: #f9fafb;
-            --gray: #9ca3af;
-            --gray-dark: #4b5563;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--darker);
-            color: var(--light);
-            line-height: 1.6;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        /* Header & Navigation */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 100;
-            background-color: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(99, 102, 241, 0.1);
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.25rem 0;
-        }
-
-        .logo {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--primary-light);
-            display: flex;
-            align-items: center;
-        }
-
-        .logo::after {
-            content: '';
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background-color: var(--accent-green);
-            border-radius: 50%;
-            margin-left: 0.5rem;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        .nav-links {
-            display: none;
-        }
-
-        .nav-links a {
-            color: var(--gray);
-            margin-left: 2rem;
-            font-weight: 500;
-            transition: color 0.3s;
-            position: relative;
-        }
-
-        .nav-links a:hover, 
-        .nav-links a.active {
-            color: var(--primary-light);
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: var(--primary);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-            transform-origin: left;
-        }
-
-        .nav-links a:hover::after,
-        .nav-links a.active::after {
-            transform: scaleX(1);
-        }
-
-        .mobile-menu-btn {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            cursor: pointer;
-        }
-
-        .mobile-menu-btn span {
-            display: block;
-            width: 30px;
-            height: 2px;
-            background-color: var(--gray);
-            transition: all 0.3s;
-        }
-
-        .mobile-menu {
-            position: fixed;
-            top: 70px;
-            left: 0;
-            width: 100%;
-            background-color: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 0;
-            transform: translateY(-100%);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 99;
-        }
-
-        .mobile-menu.active {
-            transform: translateY(0);
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .mobile-menu a {
-            display: block;
-            padding: 0.75rem 2rem;
-            color: var(--gray);
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-
-        .mobile-menu a:hover {
-            background-color: rgba(99, 102, 241, 0.1);
-            color: var(--primary-light);
-        }
-
-        @media (min-width: 768px) {
-            .nav-links {
-                display: flex;
-            }
-            .mobile-menu-btn {
-                display: none;
-            }
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 6rem 0;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 20% 30%, rgba(79, 70, 229, 0.15), transparent 70%);
-            z-index: -1;
-        }
-
-        .hero-content {
-            display: flex;
-            flex-direction: column;
-            gap: 3rem;
-        }
-
-        .hero-text {
-            max-width: 600px;
-        }
-
-        .hero-text h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
-        }
-
-        .hero-text h1 span {
-            display: block;
-        }
-
-        .hero-text h1 span:last-child {
-            background: linear-gradient(to right, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .hero-text p {
-            font-size: clamp(1rem, 2vw, 1.25rem);
-            color: var(--gray);
-            margin-bottom: 2rem;
-        }
-
-        .highlighted {
-            position: relative;
-            color: var(--primary-light);
-            font-weight: 500;
-        }
-
-        .highlighted::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 6px;
-            background-color: var(--primary);
-            opacity: 0.2;
-            border-radius: 2px;
-            z-index: -1;
-        }
-
-        .btn-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .btn-primary {
-            background: linear-gradient(to right, var(--primary-dark), var(--primary));
-            color: white;
-            font-weight: 500;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
-        }
-
-        .btn-primary svg {
-            transition: transform 0.3s;
-        }
-
-        .btn-primary:hover svg {
-            transform: translateX(4px);
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            color: var(--primary-light);
-            font-weight: 500;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            border: 2px solid var(--primary);
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .btn-outline:hover {
-            background-color: rgba(99, 102, 241, 0.1);
-            transform: translateY(-3px);
-        }
-
-        .hero-visual {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        .protein-model {
-            width: 280px;
-            height: 280px;
-            position: relative;
-        }
-
-        .protein-core {
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, var(--primary-light), var(--primary-dark));
-            opacity: 0.7;
-            animation: pulse 4s infinite;
-        }
-
-        .protein-ring {
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            border: 4px solid transparent;
-        }
-
-        .ring-1 {
-            border-top-color: var(--primary);
-            border-right-color: var(--primary);
-            animation: spin 15s linear infinite;
-        }
-
-        .ring-2 {
-            border-bottom-color: var(--accent);
-            border-left-color: var(--accent);
-            animation: spin 12s linear infinite reverse;
-        }
-
-        .amino-acid {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background-color: var(--primary-light);
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .amino-label {
-            position: absolute;
-            background-color: var(--primary);
-            color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            white-space: nowrap;
-            animation: float 5s ease-in-out infinite;
-        }
-
-        .label-1 {
-            top: 20%;
-            right: 20%;
-            animation-delay: 0.5s;
-        }
-
-        .label-2 {
-            bottom: 25%;
-            left: 20%;
-            background-color: var(--accent-green);
-            animation-delay: 1s;
-        }
-
-        .label-3 {
-            top: 30%;
-            left: 15%;
-            background-color: var(--accent);
-            animation-delay: 1.5s;
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: var(--primary-light);
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
-            40% { transform: translateY(-20px) translateX(-50%); }
-            60% { transform: translateY(-10px) translateX(-50%); }
-        }
-
-        @media (min-width: 768px) {
-            .hero-content {
-                flex-direction: row;
-                align-items: center;
-            }
-        }
-
-        /* Section Styling */
-        section {
-            padding: 5rem 0;
-            position: relative;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .section-header h2 {
-            font-size: clamp(1.875rem, 4vw, 2.5rem);
-            margin-bottom: 1rem;
-        }
-
-        .section-divider {
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(to right, var(--primary), var(--accent));
-            margin: 0 auto;
-            border-radius: 2px;
-        }
-
-        /* About Section */
-        .about {
-            background-color: var(--dark);
-        }
-
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 3rem;
-        }
-
-        .about-text h3 {
-            font-size: 1.5rem;
-            color: var(--primary-light);
-            margin-bottom: 1.5rem;
-        }
-
-        .about-text p {
-            color: var(--gray);
-            margin-bottom: 1rem;
-        }
-
-        .interests-card {
-            background-color: rgba(31, 41, 55, 0.5);
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            transition: all 0.3s;
-        }
-
-        .interests-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.2);
-        }
-
-        .interests-card h3 {
-            font-size: 1.25rem;
-            color: var(--primary-light);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .interests-card ul {
-            list-style: none;
-        }
-
-        .interests-card li {
-            color: var(--gray);
-            margin-bottom: 0.75rem;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-
-        .interests-card li::before {
-            content: '•';
-            position: absolute;
-            left: 0;
-            color: var(--primary-light);
-        }
-
-        @media (min-width: 768px) {
-            .about-content {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        /* Experience Section */
-        .experience {
-            background-color: var(--darker);
-        }
-
-        .timeline {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(to bottom, var(--primary), transparent);
-            left: 0;
-        }
-
-        .timeline-item {
-            margin-bottom: 3rem;
-            position: relative;
-            padding-left: 2rem;
-        }
-
-        .timeline-dot {
-            position: absolute;
-            left: -8px;
-            top: 0;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--primary);
-            box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
-        }
-
-        .timeline-content {
-            background-color: rgba(31, 41, 55, 0.5);
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            transition: all 0.3s;
-        }
-
-        .timeline-content:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.2);
-        }
-
-        .timeline-header {
-            margin-bottom: 1rem;
-        }
-
-        .timeline-title {
-            margin-bottom: 0.5rem;
-        }
-
-        .timeline-title h3 {
-            font-size: 1.25rem;
-            color: var(--primary-light);
-            margin-bottom: 0.25rem;
-        }
-
-        .timeline-title p {
-            color: var(--light);
-            font-weight: 500;
-        }
-
-        .timeline-date {
-            font-size: 0.875rem;
-            color: var(--gray);
-            margin-bottom: 0.5rem;
-        }
-
-        .timeline-body ul {
-            list-style: none;
-        }
-
-        .timeline-body li {
-            color: var(--gray);
-            margin-bottom: 0.75rem;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-
-        .timeline-body li::before {
-            content: '•';
-            position: absolute;
-            left: 0;
-            color: var(--primary-light);
-        }
-
-        @media (min-width: 768px) {
-            .timeline::before {
-                left: 20px;
-            }
-            .timeline-item {
-                padding-left: 3rem;
-            }
-            .timeline-dot {
-                left: 12px;
-            }
-        }
-
-        /* Project Section */
-        .projects {
-            background-color: var(--dark);
-        }
-
-        .projects-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-
-        .project-card {
-            background-color: rgba(31, 41, 55, 0.5);
-            border-radius: 0.5rem;
-            overflow: hidden;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            transition: all 0.3s;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.2);
-        }
-
-        .project-header {
-            height: 4px;
-            background: linear-gradient(to right, var(--primary-dark), var(--primary));
-        }
-
-        .project-content {
-            padding: 1.5rem;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .project-title {
-            font-size: 1.25rem;
-            color: var(--light);
-            margin-bottom: 0.75rem;
-            transition: color 0.3s;
-        }
-
-        .project-card:hover .project-title {
-            color: var(--primary-light);
-        }
-
-        .project-meta {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-        }
-
-        .project-role {
-            color: var(--primary-light);
-            font-weight: 500;
-        }
-
-        .project-period {
-            color: var(--gray);
-            font-size: 0.875rem;
-        }
-
-        .project-desc {
-            color: var(--gray);
-            margin-bottom: 1.5rem;
-            flex-grow: 1;
-        }
-
-        .project-tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: auto;
-        }
-
-        .tech-tag {
-            background-color: rgba(99, 102, 241, 0.1);
-            color: var(--primary-light);
-            font-size: 0.75rem;
-            font-weight: 500;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            transition: all 0.3s;
-        }
-
-        .tech-tag:hover {
-            background-color: rgba(99, 102, 241, 0.2);
-            border-color: rgba(99, 102, 241, 0.5);
-        }
-
-        @media (min-width: 768px) {
-            .projects-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        /* Skills Section */
-        .skills {
-            background-color: var(--darker);
-        }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-
-        .skill-card {
-            background-color: rgba(31, 41, 55, 0.5);
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .skill-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.2);
-        }
-
-        .skill-icon {
-            position: absolute;
-            top: -15px;
-            left: -15px;
-            width: 50px;
-            height: 50px;
-            border-radius: 10px;
-            background: linear-gradient(to bottom right, var(--primary), var(--primary-dark));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-        }
-
-        .skill-title {
-            font-size: 1.25rem;
-            color: var(--light);
-            margin-bottom: 1.5rem;
-            padding-left: 2.5rem;
-        }
-
-        .skill-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-        }
-
-        .skill-tag {
-            background-color: rgba(99, 102, 241, 0.1);
-            color: var(--primary-light);
-            font-size: 0.875rem;
-            padding: 0.5rem 1rem;
-            border-radius: 0.375rem;
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            transition: all 0.3s;
-        }
-
-        .skill-tag:hover {
-            background-color: rgba(99, 102, 241, 0.2);
-            border-color: rgba(99, 102, 241, 0.5);
-            transform: translateY(-3px);
-        }
-
-        @media (min-width: 768px) {
-            .skills-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        /* Education Section */
-        .education {
-            background-color: var(--dark);
-        }
-
-        .education-content {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-
-        .education-card,
-        .presentations-card {
-            background-color: rgba(31, 41, 55, 0.5);
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .education-card:hover,
-        .presentations-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.2);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .header-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 10px;
-            background: linear-gradient(to bottom right, var(--primary), var(--primary-dark));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            margin-right: 1rem;
-        }
-
-        .card-header h3 {
-            font-size: 1.25rem;
-            color: var(--light);
-        }
-
-        .university-info h4 {
-            font-size: 1.25rem;
-            color: var(--primary-light);
-            margin-bottom: 0.25rem;
-        }
-
-        .university-location {
-            color: var(--gray);
-            margin-bottom: 0.5rem;
-        }
-
-        .university-degree {
-            color: var(--light);
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-        }
-
-        .awards-section {
-            margin-top: 1.5rem;
-        }
-
-        .awards-section h5 {
-            font-size: 1rem;
-            color: var(--light);
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid rgba(99, 102, 241, 0.3);
-        }
-
-        .awards-list {
-            list-style: none;
-        }
-
-        .awards-list li {
-            display: flex;
-            align-items: flex-start;
-            color: var(--gray);
-            margin-bottom: 0.75rem;
-        }
-
-        .award-icon {
-            color: var(--primary-light);
-            margin-right: 0.75rem;
-        }
-
-        .presentation-item {
-            padding: 1.25rem;
-            background-color: rgba(99, 102, 241, 0.05);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            border-radius: 0.5rem;
-            margin-bottom: 1.5rem;
-            transition: all 0.3s;
-        }
-
-        .presentation-item:hover {
-            background-color: rgba(99, 102, 241, 0.1);
-        }
-
-        .presentation-title {
-            font-size: 1.125rem;
-            color: var(--primary-light);
-            margin-bottom: 0.75rem;
-        }
-
-        .presentation-event {
-            color: var(--light);
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-        }
-
-        .presentation-meta {
-            display: flex;
-            justify-content: space-between;
-            color: var(--gray);
-            font-size: 0.875rem;
-        }
-
-        @media (min-width: 768px) {
-            .education-content {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        /* Contact Section */
-        .contact {
-            background-color: var(--darker);
-        }
-
-        .contact-card {
-            max-width: 900px;
-            margin: 0 auto;
-            background: linear-gradient(4deg, rgba(31, 41, 55, 0.5), rgba(31, 41, 55, 0.5)), 
-                        linear-gradient(to bottom right, rgba(79, 70, 229, 0.1), rgba(96, 165, 250, 0.1));
-            border-radius: 0.5rem;
-            overflow: hidden;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            padding: 2rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        .contact-columns {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-
-        .contact-info h3,
-        .contact-form h3 {
-            font-size: 1.25rem;
-            color: var(--light);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .icon-circle {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: linear-gradient(to bottom right, var(--primary), var(--primary-dark));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 0.75rem;
-            color: white;
-        }
-
-        .contact-list {
-            list-style: none;
-            margin-bottom: 2rem;
-        }
-
-        .contact-list li {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            transition: transform 0.3s;
-        }
-
-        .contact-list li:hover {
-            transform: translateX(4px);
-        }
-
-        .contact-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: rgba(99, 102, 241, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 1rem;
-            color: var(--primary-light);
-        }
-
-        .contact-list li:hover .contact-icon {
-            background-color: rgba(99, 102, 241, 0.2);
-        }
-
-        .contact-list li a {
-            color: var(--gray);
-            display: flex;
-            align-items: center;
-        }
-
-        .contact-list li a:hover {
-            color: var(--primary-light);
-        }
-
-        .icon-small {
-            width: 14px;
-            height: 14px;
-            margin-left: 0.5rem;
-        }
-
-        .contact-quote {
-            background-color: rgba(99, 102, 241, 0.1);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            border-radius: 0.5rem;
-            padding: 1rem;
-            color: var(--gray);
-            font-style: italic;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            background-color: rgba(31, 41, 55, 0.8);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            border-radius: 0.5rem;
-            padding: 0.75rem 1rem;
-            color: var(--light);
-            font-family: inherit;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
-        }
-
-        .form-group input::placeholder,
-        .form-group textarea::placeholder {
-            color: var(--gray-dark);
-        }
-
-        .form-underline {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            height: 2px;
-            width: 0;
-            background: linear-gradient(to right, var(--primary), var(--accent));
-            transition: width 0.5s;
-        }
-
-        .form-group:hover .form-underline {
-            width: 100%;
-        }
-
-        .submit-btn {
-            background: linear-gradient(to right, var(--primary-dark), var(--primary));
-            color: white;
-            font-weight: 500;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            border: none;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
-        }
-
-        .submit-btn svg {
-            margin-left: 0.5rem;
-            transition: transform 0.3s;
-        }
-
-        .submit-btn:hover svg {
-            transform: translateX(4px);
-        }
-
-        @media (min-width: 768px) {
-            .contact-columns {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--dark);
-            padding: 3rem 0;
-            border-top: 1px solid rgba(99, 102, 241, 0.1);
-        }
-
-        .footer-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2rem;
-            text-align: center;
-        }
-
-        .footer-logo {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--primary-light);
-        }
-
-        .copyright {
-            color: var(--gray);
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
-        }
-
-        .tagline {
-            color: var(--gray-dark);
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .social-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: rgba(31, 41, 55, 0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--gray);
-            transition: all 0.3s;
-        }
-
-        .social-btn:hover {
-            transform: scale(1.1);
-            background-color: rgba(99, 102, 241, 0.2);
-            color: var(--primary-light);
-        }
-
-        .footer-note {
-            color: var(--gray-dark);
-            font-size: 0.875rem;
-        }
-
-        @media (min-width: 768px) {
-            .footer-content {
-                flex-direction: row;
-                justify-content: space-between;
-                text-align: left;
-            }
-        }
-    </style>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/aakashxtha/aakashxtha.github.io/main/favicon.ico">
 </head>
 <body>
+    <!-- Cursor Follower -->
+    <div class="cursor-follower"></div>
+    
+    <!-- Loader -->
+    <div class="loader-wrapper">
+        <div class="loader">
+            <svg class="spinner" viewBox="0 0 50 50">
+                <circle class="spinner-path" cx="25" cy="25" r="20" fill="none" stroke-width="4"></circle>
+            </svg>
+            <div class="loader-text">Loading Protein Simulation</div>
+        </div>
+    </div>
+
+    <!-- Background Effects -->
+    <canvas id="molecular-bg" class="bg-canvas"></canvas>
+    
     <!-- Header & Navigation -->
-    <header>
+    <header class="header">
         <div class="container">
-            <nav>
-                <div class="logo">&lt;Aakash Shrestha/&gt;</div>
-                <div class="nav-links">
-                    <a href="#home" class="active">Home</a>
-                    <a href="#about">About</a>
-                    <a href="#experience">Experience</a>
-                    <a href="#projects">Projects</a>
-                    <a href="#skills">Skills</a>
-                    <a href="#education">Education</a>
-                    <a href="#contact">Contact</a>
+            <nav class="nav">
+                <a href="#" class="logo">
+                    <span>&lt;</span>Aakash Shrestha<span>/&gt;</span>
+                    <span class="status-indicator"></span>
+                </a>
+                
+                <div class="nav-links desktop-nav">
+                    <a href="#home" class="nav-link active">Home</a>
+                    <a href="#about" class="nav-link">About</a>
+                    <a href="#experience" class="nav-link">Experience</a>
+                    <a href="#projects" class="nav-link">Projects</a>
+                    <a href="#skills" class="nav-link">Skills</a>
+                    <a href="#education" class="nav-link">Education</a>
+                    <a href="#contact" class="nav-link">Contact</a>
                 </div>
-                <div class="mobile-menu-btn">
+                
+                <button class="menu-toggle" aria-label="Toggle Menu">
                     <span></span>
                     <span></span>
                     <span></span>
-                </div>
+                </button>
             </nav>
         </div>
     </header>
-
-    <!-- Mobile Menu -->
-    <div class="mobile-menu">
-        <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#experience">Experience</a>
-        <a href="#projects">Projects</a>
-        <a href="#skills">Skills</a>
-        <a href="#education">Education</a>
-        <a href="#contact">Contact</a>
+    
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav">
+        <div class="mobile-nav-links">
+            <a href="#home" class="mobile-nav-link">Home</a>
+            <a href="#about" class="mobile-nav-link">About</a>
+            <a href="#experience" class="mobile-nav-link">Experience</a>
+            <a href="#projects" class="mobile-nav-link">Projects</a>
+            <a href="#skills" class="mobile-nav-link">Skills</a>
+            <a href="#education" class="mobile-nav-link">Education</a>
+            <a href="#contact" class="mobile-nav-link">Contact</a>
+        </div>
     </div>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1>
-                        <span>Hi, I'm Aakash</span>
-                        <span>Biomedical Engineer</span>
-                    </h1>
-                    <p>
-                        Computational biologist and protein engineer specializing in 
-                        <span class="highlighted">molecular dynamics</span>
-                        simulations and biomolecular design.
-                    </p>
-                    <div class="btn-group">
-                        <a href="#projects" class="btn-primary">
-                            View My Work
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="5" y1="12" x2="19" y2="12"></line>
-                                <polyline points="12 5 19 12 12 19"></polyline>
-                            </svg>
-                        </a>
-                        <a href="#contact" class="btn-outline">Contact Me</a>
-                    </div>
-                </div>
-                <div class="hero-visual">
-                    <div class="protein-model">
-                        <div class="protein-core"></div>
-                        <div class="protein-ring ring-1"></div>
-                        <div class="protein-ring ring-2"></div>
-                        <div class="amino-label label-1">Rosetta</div>
-                        <div class="amino-label label-2">PyMol</div>
-                        <div class="amino-label label-3">NAMD</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="scroll-indicator">
-            <span>Scroll Down</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="about">
-        <div class="container">
-            <div class="section-header">
-                <h2>About Me</h2>
-                <div class="section-divider"></div>
-            </div>
-            
-            <div class="about-content">
-                <div class="about-text">
-                    <h3>My Journey</h3>
-                    <p>
-                        As a biomedical engineering student at Florida International University, I've cultivated expertise in computational biology, molecular modeling, and protein engineering. My passion lies at the intersection of computational methods and biological applications, particularly in developing tools and approaches that can accelerate drug discovery and therapeutic development.
-                    </p>
-                    <p>
-                        Through research experiences at prestigious institutions like Arizona State University's Biodesign Institute and the National Renewable Energy Laboratory, I've developed and implemented novel computational methods to address complex challenges in protein dynamics, enzyme design, and polymer behavior. I'm driven by the potential of making healthcare more accessible through computational innovation.
-                    </p>
-                </div>
-                
-                <div class="about-interests">
-                    <div class="interests-card">
-                        <h3>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                                <rect x="9" y="9" width="6" height="6"></rect>
-                                <line x1="9" y1="1" x2="9" y2="4"></line>
-                                <line x1="15" y1="1" x2="15" y2="4"></line>
-                                <line x1="9" y1="20" x2="9" y2="23"></line>
-                                <line x1="15" y1="20" x2="15" y2="23"></line>
-                                <line x1="20" y1="9" x2="23" y2="9"></line>
-                                <line x1="20" y1="14" x2="23" y2="14"></line>
-                                <line x1="1" y1="9" x2="4" y2="9"></line>
-                                <line x1="1" y1="14" x2="4" y2="14"></line>
-                            </svg>
-                            Research Interests
-                        </h3>
-                        <ul>
-                            <li>Computational enzyme design and optimization</li>
-                            <li>Integration of protein dynamics into molecular modeling</li>
-                            <li>Machine learning applications in protein engineering</li>
-                            <li>Sustainable materials development through simulation</li>
-                            <li>Accelerating drug discovery with computational methods</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Experience Section -->
-    <section id="experience" class="experience">
-        <div class="container">
-            <div class="section-header">
-                <h2>Research Experience</h2>
-                <div class="section-divider"></div>
-            </div>
-            
-            <div class="timeline">
-                <!-- Experience 1 -->
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-header">
-                            <div class="timeline-title">
-                                <h3>Rosetta Commons REU Intern</h3>
-                                <p>ASU Biodesign Institute</p>
-                            </div>
-                            <div class="timeline-date">
-                                <p>May 2024 - August 2024</p>
-                                <p>Tempe, Arizona</p>
-                            </div>
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero-section">
+            <div class="dna-helix"></div>
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text fade-in">
+                        <h1 class="glitch" data-text="I'm Aakash">
+                            <span>Hi, I'm Aakash</span>
+                            <span class="gradient-text">Biomedical Engineer</span>
+                        </h1>
+                        <p>
+                            <span class="text-reveal">Computational biologist and protein engineer specializing in</span>
+                            <span class="text-reveal highlighted">molecular dynamics</span>
+                            <span class="text-reveal">simulations and biomolecular design.</span>
+                        </p>
+                        
+                        <div class="hero-buttons">
+                            <a href="#projects" class="btn btn-primary">
+                                View My Work
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </a>
+                            <a href="#contact" class="btn btn-outline">Contact Me</a>
                         </div>
-                        <div class="timeline-body">
-                            <ul>
-                                <li>Led computational research in protein engineering focusing on enzyme design and dynamics</li>
-                                <li>Engineered novel computational methods to address challenges in protein dynamics</li>
-                                <li>Presented research findings on TEM-1 β-Lactamase design at the 2024 Summer Rosetta Conference</li>
-                            </ul>
+                        
+                        <div class="amino-acids">
+                            <div class="aa-bubble" style="--delay: 0.1s; --color: var(--primary)">A</div>
+                            <div class="aa-bubble" style="--delay: 0.2s; --color: var(--primary-light)">K</div>
+                            <div class="aa-bubble" style="--delay: 0.3s; --color: var(--accent)">S</div>
+                            <div class="aa-bubble" style="--delay: 0.4s; --color: var(--accent-green)">H</div>
+                            <div class="aa-bubble" style="--delay: 0.5s; --color: var(--primary)">R</div>
+                            <div class="aa-bubble" style="--delay: 0.6s; --color: var(--primary-light)">E</div>
+                            <div class="aa-bubble" style="--delay: 0.7s; --color: var(--accent)">S</div>
+                            <div class="aa-bubble" style="--delay: 0.8s; --color: var(--accent-green)">T</div>
+                            <div class="aa-bubble" style="--delay: 0.9s; --color: var(--primary)">H</div>
+                            <div class="aa-bubble" style="--delay: 1.0s; --color: var(--primary-light)">A</div>
                         </div>
-                    </div>
-                </div>
-                
-                <!-- Experience 2 -->
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-header">
-                            <div class="timeline-title">
-                                <h3>STAR Intern</h3>
-                                <p>National Renewable Energy Laboratory</p>
-                            </div>
-                            <div class="timeline-date">
-                                <p>May 2023 - July 2023</p>
-                                <p>Golden, Colorado</p>
-                            </div>
-                        </div>
-                        <div class="timeline-body">
-                            <ul>
-                                <li>Conducted research on biodegradability of synthetic polymers (nylon 6,6 and nylon 6,10)</li>
-                                <li>Developed molecular models using CHARMM force fields</li>
-                                <li>Executed high-performance computing simulations to analyze polymer behavior</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Experience 3 -->
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-header">
-                            <div class="timeline-title">
-                                <h3>Computational Biophysics Research Assistant</h3>
-                                <p>Florida International University</p>
-                            </div>
-                            <div class="timeline-date">
-                                <p>April 2022 - Present</p>
-                                <p>Miami, Florida</p>
-                            </div>
-                        </div>
-                        <div class="timeline-body">
-                            <ul>
-                                <li>Built computational models for cellulose-graphene composite systems</li>
-                                <li>Designed Python scripts for generating complex molecular crystal structures</li>
-                                <li>Generated 3D structures of circular RNA using MXFold and Rosetta</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Experience 4 -->
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-header">
-                            <div class="timeline-title">
-                                <h3>Lead Learning Assistant</h3>
-                                <p>FIU Mathematics Department</p>
-                            </div>
-                            <div class="timeline-date">
-                                <p>January 2022 - Present</p>
-                                <p>Miami, Florida</p>
-                            </div>
-                        </div>
-                        <div class="timeline-body">
-                            <ul>
-                                <li>Lead weekly meetings for a team of 8-10 Learning Assistants</li>
-                                <li>Provide tutoring for College Algebra, Pre-Calculus, and Trigonometry</li>
-                                <li>Volunteer in MDCPS Saturday School Project guiding middle school students</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="projects">
-        <div class="container">
-            <div class="section-header">
-                <h2>Notable Projects</h2>
-                <div class="section-divider"></div>
-            </div>
-            
-            <div class="projects-grid">
-                <!-- Project 1 -->
-                <div class="project-card">
-                    <div class="project-header"></div>
-                    <div class="project-content">
-                        <h3 class="project-title">Automated Therapeutic Bra for Post-Operative Care</h3>
-                        <div class="project-meta">
-                            <span class="project-role">Technical Lead</span>
-                            <span class="project-period">August 2024 - Present</span>
-                        </div>
-                        <p class="project-desc">Designing and optimizing dual-pump mechanism with integrated pressure sensors for a Class II medical device to prevent capsular contracture.</p>
-                        <div class="project-tech">
-                            <span class="tech-tag">Arduino</span>
-                            <span class="tech-tag">Pressure Sensors</span>
-                            <span class="tech-tag">Control Systems</span>
-                            <span class="tech-tag">UI Design</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Project 2 -->
-                <div class="project-card">
-                    <div class="project-header"></div>
-                    <div class="project-content">
-                        <h3 class="project-title">Enzyme Design & Dynamics Integration</h3>
-                        <div class="project-meta">
-                            <span class="project-role">Research Intern</span>
-                            <span class="project-period">Summer 2024</span>
-                        </div>
-                        <p class="project-desc">Developed a Python interface to incorporate MARTINI coarse-grain simulations into PyRosetta for rapid dynamic analysis after protein design.</p>
-                        <div class="project-tech">
-                            <span class="tech-tag">PyRosetta</span>
-                            <span class="tech-tag">MARTINI</span>
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">Molecular Dynamics</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Project 3 -->
-                <div class="project-card">
-                    <div class="project-header"></div>
-                    <div class="project-content">
-                        <h3 class="project-title">Nylon Degradation Analysis</h3>
-                        <div class="project-meta">
-                            <span class="project-role">Research Intern</span>
-                            <span class="project-period">Summer 2023</span>
-                        </div>
-                        <p class="project-desc">Researched biodegradability of synthetic polymers using molecular dynamics simulations to identify key degradation mechanisms.</p>
-                        <div class="project-tech">
-                            <span class="tech-tag">CHARMM</span>
-                            <span class="tech-tag">Molecular Modeling</span>
-                            <span class="tech-tag">HPC</span>
-                            <span class="tech-tag">NAMD</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Project 4 -->
-                <div class="project-card">
-                    <div class="project-header"></div>
-                    <div class="project-content">
-                        <h3 class="project-title">Cellulose-Graphene Composite Modeling</h3>
-                        <div class="project-meta">
-                            <span class="project-role">Research Assistant</span>
-                            <span class="project-period">2022 - Present</span>
-                        </div>
-                        <p class="project-desc">Created computational models and Python scripts for generating complex molecular crystal structures of cellulose-graphene composites.</p>
-                        <div class="project-tech">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">MD Simulations</span>
-                            <span class="tech-tag">Molecular Modeling</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Skills Section -->
-    <section id="skills" class="skills">
-        <div class="container">
-            <div class="section-header">
-                <h2>Technical Skills</h2>
-                <div class="section-divider"></div>
-            </div>
-            
-            <div class="skills-grid">
-                <!-- Molecular Modeling -->
-                <div class="skill-card">
-                    <div class="skill-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M15 3h6v6"></path>
-                            <path d="M10 15l6-6"></path>
-                            <path d="M7 14a7 7 0 0 0 3 5.7"></path>
-                            <path d="M3 14a10.5 10.5 0 0 0 2.5 5"></path>
-                        </svg>
-                    </div>
-                    <h3 class="skill-title">Molecular Modeling</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">NAMD</span>
-                        <span class="skill-tag">CHARMM</span>
-                        <span class="skill-tag">VMD</span>
-                        <span class="skill-tag">PyMol</span>
-                        <span class="skill-tag">Chimera</span>
-                    </div>
-                </div>
-                
-                <!-- Protein Design -->
-                <div class="skill-card">
-                    <div class="skill-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
-                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
-                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
-                        </svg>
-                    </div>
-                    <h3 class="skill-title">Protein Design</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">PyRosetta</span>
-                        <span class="skill-tag">RFDiffusion</span>
-                        <span class="skill-tag">ProteinMPNN</span>
-                        <span class="skill-tag">AlphaFold</span>
-                    </div>
-                </div>
-                
-                <!-- Programming -->
-                <div class="skill-card">
-                    <div class="skill-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="16 18 22 12 16 6"></polyline>
-                            <polyline points="8 6 2 12 8 18"></polyline>
-                        </svg>
-                    </div>
-                    <h3 class="skill-title">Programming</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">Python</span>
-                        <span class="skill-tag">MATLAB</span>
-                        <span class="skill-tag">Git</span>
-                        <span class="skill-tag">Bash</span>
-                        <span class="skill-tag">Linux</span>
-                        <span class="skill-tag">HPC</span>
-                    </div>
-                </div>
-                
-                <!-- Laboratory Techniques -->
-                <div class="skill-card">
-                    <div class="skill-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M19.2 5H4.8a1 1 0 0 0-.7 1.7l5.3 5.3c.3.3.4.7.4 1.1V19l4.2-4.2c.4-.4.6-.9.6-1.4V12l5.3-5.3a1 1 0 0 0-.7-1.7z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="skill-title">Laboratory Techniques</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">PCR</span>
-                        <span class="skill-tag">Gel Electrophoresis</span>
-                        <span class="skill-tag">DNA Extraction</span>
-                        <span class="skill-tag">Western Blot</span>
-                        <span class="skill-tag">Spectrophotometry</span>
-                        <span class="skill-tag">HPLC</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Education Section -->
-    <section id="education" class="education">
-        <div class="container">
-            <div class="section-header">
-                <h2>Education & Presentations</h2>
-                <div class="section-divider"></div>
-            </div>
-            
-            <div class="education-content">
-                <!-- Education Card -->
-                <div class="education-card">
-                    <div class="card-header">
-                        <div class="header-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                            </svg>
-                        </div>
-                        <h3>Education</h3>
                     </div>
                     
-                    <div class="university-info">
-                        <h4>Florida International University</h4>
-                        <p class="university-location">Miami, FL</p>
-                        <p class="university-degree">Bachelor of Science in Biomedical Engineering</p>
-                        <p>Expected May 2025</p>
-                        <p>GPA: 3.94/4.00</p>
-                    </div>
-                    
-                    <div class="awards-section">
-                        <h5>Awards & Honors</h5>
-                        <ul class="awards-list">
-                            <li>
-                                <span class="award-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="8" r="7"></circle>
-                                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
-                                    </svg>
-                                </span>
-                                <span>Ambassador Scholarship</span>
-                            </li>
-                            <li>
-                                <span class="award-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="8" r="7"></circle>
-                                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
-                                    </svg>
-                                </span>
-                                <span>SGA Undergraduate Excellence Scholarship</span>
-                            </li>
-                            <li>
-                                <span class="award-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="8" r="7"></circle>
-                                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
-                                    </svg>
-                                </span>
-                                <span>SGA International Scholarship</span>
-                            </li>
-                            <li>
-                                <span class="award-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="8" r="7"></circle>
-                                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
-                                    </svg>
-                                </span>
-                                <span>Arthrex Scholarship</span>
-                            </li>
-                            <li>
-                                <span class="award-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="8" r="7"></circle>
-                                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
-                                    </svg>
-                                </span>
-                                <span>Honors College Student</span>
-                            </li>
-                            <li>
-                                <span class="award-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="8" r="7"></circle>
-                                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
-                                    </svg>
-                                </span>
-                                <span>Dean's List: Fall 2021 - Spring 2024 (7 consecutive semesters)</span>
-                            </li>
-                        </ul>
+                    <div class="hero-visual fade-in-delayed">
+                        <div class="protein-container">
+                            <canvas id="protein-canvas"></canvas>
+                            <div class="glow-orbit"></div>
+                            <div class="orbiting-label" style="--angle: 30deg; --distance: 160px; --delay: 0s;">
+                                <div class="tech-pill">PyRosetta</div>
+                            </div>
+                            <div class="orbiting-label" style="--angle: 150deg; --distance: 170px; --delay: 0.5s;">
+                                <div class="tech-pill">NAMD</div>
+                            </div>
+                            <div class="orbiting-label" style="--angle: 270deg; --distance: 180px; --delay: 1s;">
+                                <div class="tech-pill">AlphaFold</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
+            
+            <div class="scroll-indicator">
+                <span>Scroll Down</span>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 5V19M12 19L19 12M12 19L5 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about-section section-padding">
+            <div class="hexagon-bg"></div>
+            <div class="container">
+                <div class="section-header reveal-element">
+                    <h2>About Me</h2>
+                    <div class="section-divider"></div>
+                </div>
                 
-                <!-- Presentations Card -->
-                <div class="presentations-card">
-                    <div class="card-header">
-                        <div class="header-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14 2 14 8 20 8"></polyline>
-                                <line x1="16" y1="13" x2="8" y2="13"></line>
-                                <line x1="16" y1="17" x2="8" y2="17"></line>
-                                <polyline points="10 9 9 9 8 9"></polyline>
-                            </svg>
-                        </div>
-                        <h3>Presentations</h3>
+                <div class="about-content">
+                    <div class="about-text reveal-element">
+                        <h3>My Journey</h3>
+                        <p>
+                            As a biomedical engineering student at Florida International University, I've cultivated expertise in computational biology, molecular modeling, and protein engineering. My passion lies at the intersection of computational methods and biological applications, particularly in developing tools and approaches that can accelerate drug discovery and therapeutic development.
+                        </p>
+                        <p>
+                            Through research experiences at prestigious institutions like Arizona State University's Biodesign Institute and the National Renewable Energy Laboratory, I've developed and implemented novel computational methods to address complex challenges in protein dynamics, enzyme design, and polymer behavior. I'm driven by the potential of making healthcare more accessible through computational innovation.
+                        </p>
                     </div>
                     
-                    <div class="presentations-list">
-                        <div class="presentation-item">
-                            <h4 class="presentation-title">Computational Design of TEM-1 β-Lactamase Using PyRosetta: Step Towards Integrating Dynamics into Computational Enzyme Design</h4>
-                            <p class="presentation-event">Summer RosettaCon 2024</p>
-                            <div class="presentation-meta">
-                                <span>Cle Elum, WA</span>
-                                <span>August 8, 2024</span>
+                    <div class="about-interests reveal-element" data-delay="0.2">
+                        <div class="interests-card">
+                            <h3>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <rect x="9" y="9" width="6" height="6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <line x1="9" y1="1" x2="9" y2="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <line x1="15" y1="1" x2="15" y2="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <line x1="9" y1="20" x2="9" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <line x1="15" y1="20" x2="15" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <line x1="20" y1="9" x2="23" y2="9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <line x1="20" y1="14" x2="23" y2="14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <line x1="1" y1="9" x2="4" y2="9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <line x1="1" y1="14" x2="4" y2="14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Research Interests
+                            </h3>
+                            <ul>
+                                <li>Computational enzyme design and optimization</li>
+                                <li>Integration of protein dynamics into molecular modeling</li>
+                                <li>Machine learning applications in protein engineering</li>
+                                <li>Sustainable materials development through simulation</li>
+                                <li>Accelerating drug discovery with computational methods</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="experience-section section-padding">
+            <div class="grid-bg"></div>
+            <div class="container">
+                <div class="section-header reveal-element">
+                    <h2>Research Experience</h2>
+                    <div class="section-divider"></div>
+                </div>
+                
+                <div class="timeline">
+                    <!-- Experience 1 -->
+                    <div class="timeline-item reveal-element">
+                        <div class="timeline-marker">
+                            <div class="marker-dot"></div>
+                            <div class="marker-line"></div>
+                        </div>
+                        
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <div class="timeline-title">
+                                    <h3>Rosetta Commons REU Intern</h3>
+                                    <p>ASU Biodesign Institute</p>
+                                </div>
+                                <div class="timeline-date">
+                                    <p>May 2024 - August 2024</p>
+                                    <p>Tempe, Arizona</p>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-body">
+                                <ul>
+                                    <li>Led computational research in protein engineering focusing on enzyme design and dynamics</li>
+                                    <li>Engineered novel computational methods to address challenges in protein dynamics</li>
+                                    <li>Presented research findings on TEM-1 β-Lactamase design at the 2024 Summer Rosetta Conference</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Experience 2 -->
+                    <div class="timeline-item reveal-element" data-delay="0.1">
+                        <div class="timeline-marker">
+                            <div class="marker-dot"></div>
+                            <div class="marker-line"></div>
+                        </div>
+                        
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <div class="timeline-title">
+                                    <h3>STAR Intern</h3>
+                                    <p>National Renewable Energy Laboratory</p>
+                                </div>
+                                <div class="timeline-date">
+                                    <p>May 2023 - July 2023</p>
+                                    <p>Golden, Colorado</p>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-body">
+                                <ul>
+                                    <li>Conducted research on biodegradability of synthetic polymers (nylon 6,6 and nylon 6,10)</li>
+                                    <li>Developed molecular models using CHARMM force fields</li>
+                                    <li>Executed high-performance computing simulations to analyze polymer behavior</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Experience 3 -->
+                    <div class="timeline-item reveal-element" data-delay="0.2">
+                        <div class="timeline-marker">
+                            <div class="marker-dot"></div>
+                            <div class="marker-line"></div>
+                        </div>
+                        
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <div class="timeline-title">
+                                    <h3>Computational Biophysics Research Assistant</h3>
+                                    <p>Florida International University</p>
+                                </div>
+                                <div class="timeline-date">
+                                    <p>April 2022 - Present</p>
+                                    <p>Miami, Florida</p>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-body">
+                                <ul>
+                                    <li>Built computational models for cellulose-graphene composite systems</li>
+                                    <li>Designed Python scripts for generating complex molecular crystal structures</li>
+                                    <li>Generated 3D structures of circular RNA using MXFold and Rosetta</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Experience 4 -->
+                    <div class="timeline-item reveal-element" data-delay="0.3">
+                        <div class="timeline-marker">
+                            <div class="marker-dot"></div>
+                            <div class="marker-line"></div>
+                        </div>
+                        
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <div class="timeline-title">
+                                    <h3>Lead Learning Assistant</h3>
+                                    <p>FIU Mathematics Department</p>
+                                </div>
+                                <div class="timeline-date">
+                                    <p>January 2022 - Present</p>
+                                    <p>Miami, Florida</p>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-body">
+                                <ul>
+                                    <li>Lead weekly meetings for a team of 8-10 Learning Assistants</li>
+                                    <li>Provide tutoring for College Algebra, Pre-Calculus, and Trigonometry</li>
+                                    <li>Volunteer in MDCPS Saturday School Project guiding middle school students</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="projects-section section-padding">
+            <div class="molecule-bg"></div>
+            <div class="container">
+                <div class="section-header reveal-element">
+                    <h2>Notable Projects</h2>
+                    <div class="section-divider"></div>
+                </div>
+                
+                <div class="projects-grid">
+                    <!-- Project 1 -->
+                    <div class="project-card reveal-element hover3d">
+                        <div class="project-card-inner hover3d-inner">
+                            <div class="project-header"></div>
+                            <div class="project-content">
+                                <h3 class="project-title">Automated Therapeutic Bra for Post-Operative Care</h3>
+                                <div class="project-meta">
+                                    <span class="project-role">Technical Lead</span>
+                                    <span class="project-period">August 2024 - Present</span>
+                                </div>
+                                <p class="project-desc">Designing and optimizing dual-pump mechanism with integrated pressure sensors for a Class II medical device to prevent capsular contracture.</p>
+                                <div class="project-tech">
+                                    <span class="tech-tag">Arduino</span>
+                                    <span class="tech-tag">Pressure Sensors</span>
+                                    <span class="tech-tag">Control Systems</span>
+                                    <span class="tech-tag">UI Design</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Project 2 -->
+                    <div class="project-card reveal-element hover3d" data-delay="0.1">
+                        <div class="project-card-inner hover3d-inner">
+                            <div class="project-header"></div>
+                            <div class="project-content">
+                                <h3 class="project-title">Enzyme Design & Dynamics Integration</h3>
+                                <div class="project-meta">
+                                    <span class="project-role">Research Intern</span>
+                                    <span class="project-period">Summer 2024</span>
+                                </div>
+                                <p class="project-desc">Developed a Python interface to incorporate MARTINI coarse-grain simulations into PyRosetta for rapid dynamic analysis after protein design.</p>
+                                <div class="project-tech">
+                                    <span class="tech-tag">PyRosetta</span>
+                                    <span class="tech-tag">MARTINI</span>
+                                    <span class="tech-tag">Python</span>
+                                    <span class="tech-tag">Molecular Dynamics</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Project 3 -->
+                    <div class="project-card reveal-element hover3d" data-delay="0.2">
+                        <div class="project-card-inner hover3d-inner">
+                            <div class="project-header"></div>
+                            <div class="project-content">
+                                <h3 class="project-title">Nylon Degradation Analysis</h3>
+                                <div class="project-meta">
+                                    <span class="project-role">Research Intern</span>
+                                    <span class="project-period">Summer 2023</span>
+                                </div>
+                                <p class="project-desc">Researched biodegradability of synthetic polymers using molecular dynamics simulations to identify key degradation mechanisms.</p>
+                                <div class="project-tech">
+                                    <span class="tech-tag">CHARMM</span>
+                                    <span class="tech-tag">Molecular Modeling</span>
+                                    <span class="tech-tag">HPC</span>
+                                    <span class="tech-tag">NAMD</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Project 4 -->
+                    <div class="project-card reveal-element hover3d" data-delay="0.3">
+                        <div class="project-card-inner hover3d-inner">
+                            <div class="project-header"></div>
+                            <div class="project-content">
+                                <h3 class="project-title">Cellulose-Graphene Composite Modeling</h3>
+                                <div class="project-meta">
+                                    <span class="project-role">Research Assistant</span>
+                                    <span class="project-period">2022 - Present</span>
+                                </div>
+                                <p class="project-desc">Created computational models and Python scripts for generating complex molecular crystal structures of cellulose-graphene composites.</p>
+                                <div class="project-tech">
+                                    <span class="tech-tag">Python</span>
+                                    <span class="tech-tag">MD Simulations</span>
+                                    <span class="tech-tag">Molecular Modeling</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="skills-section section-padding">
+            <div class="binary-bg"></div>
+            <div class="container">
+                <div class="section-header reveal-element">
+                    <h2>Technical Skills</h2>
+                    <div class="section-divider"></div>
+                </div>
+                
+                <div class="skills-grid">
+                    <!-- Skill Category 1 -->
+                    <div class="skill-card reveal-element hover-lift">
+                        <div class="skill-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M15 3H21V9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M18 14V14.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M13 21L12 20L10 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M8 10C16.831 10 10.562 22 16.275 22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M8 2C3 2 3 8 3 8V18C3 18 3 22 8 22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M19 10H19.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M2 10H2.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h3>Molecular Modeling</h3>
+                        <div class="skill-tags">
+                            <span class="skill-tag magnet">NAMD</span>
+                            <span class="skill-tag magnet">CHARMM</span>
+                            <span class="skill-tag magnet">VMD</span>
+                            <span class="skill-tag magnet">PyMol</span>
+                            <span class="skill-tag magnet">Chimera</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Skill Category 2 -->
+                    <div class="skill-card reveal-element hover-lift" data-delay="0.1">
+                        <div class="skill-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <ellipse cx="12" cy="5" rx="9" ry="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M21 12C21 13.657 16.971 15 12 15C7.029 15 3 13.657 3 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M3 5V19C3 20.657 7.029 22 12 22C16.971 22 21 20.657 21 19V5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h3>Protein Design</h3>
+                        <div class="skill-tags">
+                            <span class="skill-tag magnet">PyRosetta</span>
+                            <span class="skill-tag magnet">RFDiffusion</span>
+                            <span class="skill-tag magnet">ProteinMPNN</span>
+                            <span class="skill-tag magnet">AlphaFold</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Skill Category 3 -->
+                    <div class="skill-card reveal-element hover-lift" data-delay="0.2">
+                        <div class="skill-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <polyline points="16 18 22 12 16 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <polyline points="8 6 2 12 8 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h3>Programming</h3>
+                        <div class="skill-tags">
+                            <span class="skill-tag magnet">Python</span>
+                            <span class="skill-tag magnet">MATLAB</span>
+                            <span class="skill-tag magnet">Git</span>
+                            <span class="skill-tag magnet">Bash</span>
+                            <span class="skill-tag magnet">Linux</span>
+                            <span class="skill-tag magnet">HPC</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Skill Category 4 -->
+                    <div class="skill-card reveal-element hover-lift" data-delay="0.3">
+                        <div class="skill-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19.2 5H4.8C3.81 5 3 5.81 3 6.8V17.2C3 18.19 3.81 19 4.8 19H19.2C20.19 19 21 18.19 21 17.2V6.8C21 5.81 20.19 5 19.2 5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M3 11H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M9 16H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M8 7.99995H8.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 8H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M16 8H16.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h3>Laboratory Techniques</h3>
+                        <div class="skill-tags">
+                            <span class="skill-tag magnet">PCR</span>
+                            <span class="skill-tag magnet">Gel Electrophoresis</span>
+                            <span class="skill-tag magnet">DNA Extraction</span>
+                            <span class="skill-tag magnet">Western Blot</span>
+                            <span class="skill-tag magnet">Spectrophotometry</span>
+                            <span class="skill-tag magnet">HPLC</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education & Presentations Section -->
+        <section id="education" class="education-section section-padding">
+            <div class="dna-strand-bg"></div>
+            <div class="container">
+                <div class="section-header reveal-element">
+                    <h2>Education & Presentations</h2>
+                    <div class="section-divider"></div>
+                </div>
+                
+                <div class="education-grid">
+                    <!-- Education Card -->
+                    <div class="education-card reveal-element glass-card">
+                        <div class="card-header">
+                            <div class="header-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 19.5C4 18.837 4.26339 18.2011 4.73223 17.7322C5.20107 17.2634 5.83696 17 6.5 17H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M6.5 2H20V22H6.5C5.83696 22 5.20107 21.7366 4.73223 21.2678C4.26339 20.7989 4 20.163 4 19.5V4.5C4 3.83696 4.26339 3.20107 4.73223 2.73223C5.20107 2.26339 5.83696 2 6.5 2V2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h3>Education</h3>
+                        </div>
+                        
+                        <div class="edu-details">
+                            <div class="university-info">
+                                <h4>Florida International University</h4>
+                                <p class="location">Miami, FL</p>
+                                <p class="degree">Bachelor of Science in Biomedical Engineering</p>
+                                <p>Expected May 2025</p>
+                                <p>GPA: 3.94/4.00</p>
+                            </div>
+                            
+                            <div class="awards-section">
+                                <h5>Awards & Honors</h5>
+                                <ul class="awards-list">
+                                    <li>
+                                        <span class="award-icon">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <circle cx="12" cy="8" r="7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        </span>
+                                        <span>Ambassador Scholarship</span>
+                                    </li>
+                                    <li>
+                                        <span class="award-icon">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <circle cx="12" cy="8" r="7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        </span>
+                                        <span>SGA Undergraduate Excellence Scholarship</span>
+                                    </li>
+                                    <li>
+                                        <span class="award-icon">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <circle cx="12" cy="8" r="7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        </span>
+                                        <span>SGA International Scholarship</span>
+                                    </li>
+                                    <li>
+                                        <span class="award-icon">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <circle cx="12" cy="8" r="7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        </span>
+                                        <span>Arthrex Scholarship</span>
+                                    </li>
+                                    <li>
+                                        <span class="award-icon">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <circle cx="12" cy="8" r="7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        </span>
+                                        <span>Honors College Student</span>
+                                    </li>
+                                    <li>
+                                        <span class="award-icon">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <circle cx="12" cy="8" r="7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        </span>
+                                        <span>Dean's List: Fall 2021 - Spring 2024 (7 consecutive semesters)</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Presentations Card -->
+                    <div class="presentations-card reveal-element glass-card" data-delay="0.2">
+                        <div class="card-header">
+                            <div class="header-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M14 2V8H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M16 13H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M16 17H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M10 9H9H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h3>Presentations</h3>
+                        </div>
+                        
+                        <div class="presentations-list">
+                            <div class="presentation-item">
+                                <h4>Computational Design of TEM-1 β-Lactamase Using PyRosetta: Step Towards Integrating Dynamics into Computational Enzyme Design</h4>
+                                <p class="presentation-event">Summer RosettaCon 2024</p>
+                                <div class="presentation-meta">
+                                    <span>Cle Elum, WA</span>
+                                    <span>August 8, 2024</span>
+                                </div>
+                            </div>
+                            
+                            <div class="presentation-item">
+                                <h4>From Simulation to Solution: Decoding Nylons for a Sustainable Future</h4>
+                                <p class="presentation-event">Summer 2023 Intern Poster Symposium</p>
+                                <div class="presentation-meta">
+                                    <span>NREL, Golden, CO</span>
+                                    <span>July 27, 2023</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section section-padding">
+            <div class="data-flow-bg"></div>
+            <div class="container">
+                <div class="section-header reveal-element">
+                    <h2>Get In Touch</h2>
+                    <div class="section-divider"></div>
+                </div>
+                
+                <div class="contact-card reveal-element">
+                    <div class="contact-grid">
+                        <div class="contact-info">
+                            <h3>
+                                <span class="icon-circle">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M22 6L12 13L2 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                                Contact Information
+                            </h3>
+                            <ul class="contact-list">
+                                <li class="contact-item">
+                                    <div class="contact-icon">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M22 6L12 13L2 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <span>shresthaaakash678@gmail.com</span>
+                                </li>
+                                <li class="contact-item">
+                                    <div class="contact-icon">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9 19C4.7 16.6 1 13.2 1 9.4C1 5.6 4.1 2.5 8 2.5C11.9 2.5 15 5.6 15 9.4C15 10.3 14.8 11.1 14.5 11.9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M15.2 22.7C16.2 23 17.1 23 17.9 22.7C20.5 21.1 22 18.8 22 16.2C22 13.7 18.5 11.6 16.5 11.4C15.1 11.3 13.6 11.7 12.3 12.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <a href="https://github.com/aakashxtha" target="_blank" class="link-hover">
+                                        github.com/aakashxtha
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-small">
+                                            <path d="M7 17L17 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M7 7H17V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </a>
+                                </li>
+                                <li class="contact-item">
+                                    <div class="contact-icon">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M16 8C16 8 16 6 20 6V2C12 2 12 8 12 8V16C12 16 12 22 20 22V18C16 18 16 16 16 16V8Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M2 6H8V22H2V6Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <a href="https://www.linkedin.com/in/aakashshrestha395" target="_blank" class="link-hover">
+                                        linkedin.com/in/aakashshrestha395
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-small">
+                                            <path d="M7 17L17 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M7 7H17V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </a>
+                                </li>
+                            </ul>
+                            
+                            <div class="contact-quote">
+                                <svg width="36" height="36" viewBox="0 0 24 24" class="quote-icon" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M3 21c3.75-1 5.562-3.025 6-9h-4V8.5C5 7.26 5.81 6 7.5 6 9.24 6 10 7.5 10 8.5v1.5c0 5.25-2.083 10-7 11zm11 0c3.75-1 5.562-3.025 6-9h-4V8.5c0-1.24.81-2.5 2.5-2.5C20.24 6 21 7.5 21 8.5v1.5c0 5.25-2.083 10-7 11z" stroke="currentColor" opacity="0.2" fill="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <p>I'm always interested in discussing new research opportunities or collaborations in computational biology and protein engineering.</p>
                             </div>
                         </div>
                         
-                        <div class="presentation-item">
-                            <h4 class="presentation-title">From Simulation to Solution: Decoding Nylons for a Sustainable Future</h4>
-                            <p class="presentation-event">Summer 2023 Intern Poster Symposium</p>
-                            <div class="presentation-meta">
-                                <span>NREL, Golden, CO</span>
-                                <span>July 27, 2023</span>
-                            </div>
+                        <div class="contact-form">
+                            <h3>
+                                <span class="icon-circle">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M21 11.5C21 16.75 16.75 21 11.5 21C6.25 21 2 16.75 2 11.5C2 6.25 6.25 2 11.5 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M22 22L20 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M11 9H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M11 13H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M15 7V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M7 13C7.55228 13 8 12.5523 8 12C8 11.4477 7.55228 11 7 11C6.44772 11 6 11.4477 6 12C6 12.5523 6.44772 13 7 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                                Send Me a Message
+                            </h3>
+                            <form id="contact-form" class="form-animated">
+                                <div class="form-group">
+                                    <input type="text" id="name" required class="form-control">
+                                    <label for="name" class="form-label">Your Name</label>
+                                    <div class="form-bar"></div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" id="email" required class="form-control">
+                                    <label for="email" class="form-label">Your Email</label>
+                                    <div class="form-bar"></div>
+                                </div>
+                                <div class="form-group">
+                                    <textarea id="message" rows="5" required class="form-control"></textarea>
+                                    <label for="message" class="form-label">Your Message</label>
+                                    <div class="form-bar"></div>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-glow">
+                                    <span>Send Message</span>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <div class="section-header">
-                <h2>Get In Touch</h2>
-                <div class="section-divider"></div>
-            </div>
-            
-            <div class="contact-card">
-                <div class="contact-columns">
-                    <div class="contact-info">
-                        <h3>
-                            <span class="icon-circle">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                    <polyline points="22,6 12,13 2,6"></polyline>
-                                </svg>
-                            </span>
-                            Contact Information
-                        </h3>
-                        <ul class="contact-list">
-                            <li>
-                                <div class="contact-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                        <polyline points="22,6 12,13 2,6"></polyline>
-                                    </svg>
-                                </div>
-                                <span>shresthaaakash678@gmail.com</span>
-                            </li>
-                            <li>
-                                <div class="contact-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-                                    </svg>
-                                </div>
-                                <a href="https://github.com/aakashxtha" target="_blank">
-                                    github.com/aakashxtha
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-small">
-                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                        <polyline points="15 3 21 3 21 9"></polyline>
-                                        <line x1="10" y1="14" x2="21" y2="3"></line>
-                                    </svg>
-                                </a>
-                            </li>
-                            <li>
-                                <div class="contact-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                                        <rect x="2" y="9" width="4" height="12"></rect>
-                                        <circle cx="4" cy="4" r="2"></circle>
-                                    </svg>
-                                </div>
-                                <a href="https://www.linkedin.com/in/aakashshrestha395" target="_blank">
-                                    linkedin.com/in/aakashshrestha395
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-small">
-                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                        <polyline points="15 3 21 3 21 9"></polyline>
-                                        <line x1="10" y1="14" x2="21" y2="3"></line>
-                                    </svg>
-                                </a>
-                            </li>
-                        </ul>
-                        
-                        <div class="contact-quote">
-                            <p>"I'm always interested in discussing new research opportunities or collaborations in computational biology and protein engineering."</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-form">
-                        <h3>
-                            <span class="icon-circle">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-                                </svg>
-                            </span>
-                            Send Me a Message
-                        </h3>
-                        <form id="contact-form">
-                            <div class="form-group">
-                                <input type="text" id="name" placeholder="Your Name" required>
-                                <div class="form-underline"></div>
-                            </div>
-                            <div class="form-group">
-                                <input type="email" id="email" placeholder="Your Email" required>
-                                <div class="form-underline"></div>
-                            </div>
-                            <div class="form-group">
-                                <textarea id="message" rows="5" placeholder="Your Message" required></textarea>
-                                <div class="form-underline"></div>
-                            </div>
-                            <button type="submit" class="submit-btn">
-                                <span>Send Message</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                    <polyline points="12 5 19 12 12 19"></polyline>
-                                </svg>
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
     <!-- Footer -->
-    <footer>
+    <footer class="footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-info">
                     <div class="footer-logo">&lt;Aakash Shrestha/&gt;</div>
                     <p class="copyright">© 2025. All rights reserved.</p>
-                    <p class="tagline">Computational Biologist & Protein Engineer</p>
+                    <p class="footer-tagline">Computational Biologist & Protein Engineer</p>
                 </div>
                 
                 <div class="footer-social">
                     <div class="social-links">
-                        <a href="https://github.com/aakashxtha" target="_blank">
-                            <div class="social-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-                                </svg>
-                            </div>
+                        <a href="https://github.com/aakashxtha" target="_blank" class="social-link">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 19C4 20.5 4 16.5 2 16M16 22V18.13C16.0375 17.6532 15.9731 17.1738 15.811 16.7238C15.6489 16.2738 15.3929 15.8634 15.06 15.52C18.2 15.17 21.5 13.98 21.5 8.52C21.4997 7.12383 20.9627 5.78043 20 4.77C20.4559 3.54851 20.4236 2.19835 19.91 0.999999C19.91 0.999999 18.73 0.649999 16 2.48C13.708 1.85882 11.292 1.85882 9 2.48C6.27 0.649999 5.09 0.999999 5.09 0.999999C4.57638 2.19835 4.54414 3.54851 5 4.77C4.03013 5.78824 3.49252 7.14446 3.5 8.55C3.5 13.97 6.8 15.16 9.94 15.55C9.611 15.89 9.35726 16.2954 9.19531 16.7399C9.03335 17.1844 8.96681 17.6581 9 18.13V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
                         </a>
-                        <a href="https://www.linkedin.com/in/aakashshrestha395" target="_blank">
-                            <div class="social-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                                    <rect x="2" y="9" width="4" height="12"></rect>
-                                    <circle cx="4" cy="4" r="2"></circle>
-                                </svg>
-                            </div>
+                        <a href="https://www.linkedin.com/in/aakashshrestha395" target="_blank" class="social-link">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16 8C16 8 16 6 20 6V2C12 2 12 8 12 8V16C12 16 12 22 20 22V18C16 18 16 16 16 16V8Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <rect x="2" y="6" width="6" height="16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
                         </a>
-                        <a href="mailto:shresthaaakash678@gmail.com">
-                            <div class="social-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                    <polyline points="22,6 12,13 2,6"></polyline>
-                                </svg>
-                            </div>
+                        <a href="mailto:shresthaaakash678@gmail.com" class="social-link">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M22 6L12 13L2 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
                         </a>
                     </div>
                     <p class="footer-note">Design inspired by computational biology</p>
@@ -1866,70 +795,14 @@
         </div>
     </footer>
 
-    <script>
-        // Mobile menu toggle
-        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        const mobileMenu = document.querySelector('.mobile-menu');
-        
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('active');
-        });
-        
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                
-                mobileMenu.classList.remove('active');
-                
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    window.scrollTo({
-                        top: target.offsetTop - 70,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-        
-        // Update active nav link on scroll
-        window.addEventListener('scroll', () => {
-            const scrollPosition = window.scrollY;
-            
-            // Nav background change on scroll
-            const header = document.querySelector('header');
-            if (scrollPosition > 50) {
-                header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
-            } else {
-                header.style.boxShadow = 'none';
-            }
-            
-            // Update active nav link
-            document.querySelectorAll('section').forEach(section => {
-                const sectionTop = section.offsetTop - 100;
-                const sectionHeight = section.offsetHeight;
-                const sectionId = section.getAttribute('id');
-                
-                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-                    document.querySelectorAll('.nav-links a').forEach(link => {
-                        link.classList.remove('active');
-                        if (link.getAttribute('href') === `#${sectionId}`) {
-                            link.classList.add('active');
-                        }
-                    });
-                }
-            });
-        });
-        
-        // Form submission (demo only)
-        const contactForm = document.getElementById('contact-form');
-        if (contactForm) {
-            contactForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                alert('Thanks for your message! This is a demo form - in a real website, this would send your message.');
-                contactForm.reset();
-            });
-        }
-    </script>
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="back-to-top" aria-label="Back to Top">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 19V5M12 5L5 12M12 5L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
 </body>
 </html>
