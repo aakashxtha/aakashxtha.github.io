@@ -3,16 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aakash Shrestha | Computational Biologist</title>
+    <title>Aakash Shrestha | Computational Biologist & Biomedical Engineer</title>
+    
+    <!-- Meta tags for SEO and sharing -->
+    <meta name="description" content="Portfolio of Aakash Shrestha, a computational biologist and biomedical engineer specializing in molecular dynamics simulations and protein engineering.">
+    <meta name="keywords" content="computational biology, biomedical engineering, protein engineering, molecular dynamics, PyRosetta, NAMD, AlphaFold">
+    <meta property="og:title" content="Aakash Shrestha | Computational Biology Portfolio">
+    <meta property="og:description" content="Showcasing research and projects in computational biology, molecular dynamics simulations, and protein engineering.">
+    <meta property="og:type" content="website">
     
     <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Stylesheets -->
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="style.css">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/aakashxtha/aakashxtha.github.io/main/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
 </head>
 <body>
     <!-- Cursor Follower -->
@@ -24,11 +33,14 @@
             <svg class="spinner" viewBox="0 0 50 50">
                 <circle class="spinner-path" cx="25" cy="25" r="20" fill="none" stroke-width="4"></circle>
             </svg>
-            <div class="loader-text">Loading Protein Simulation</div>
+            <div class="loader-text">Initializing Molecular Simulation</div>
+            <div class="loader-progress">
+                <div class="loader-progress-bar"></div>
+            </div>
         </div>
     </div>
 
-    <!-- Background Effects -->
+    <!-- Background Canvas -->
     <canvas id="molecular-bg" class="bg-canvas"></canvas>
     
     <!-- Header & Navigation -->
@@ -76,18 +88,18 @@
     <main>
         <!-- Hero Section -->
         <section id="home" class="hero-section">
-            <div class="dna-helix"></div>
+            <div class="hero-particles"></div>
             <div class="container">
                 <div class="hero-content">
                     <div class="hero-text fade-in">
-                        <h1 class="glitch" data-text="I'm Aakash">
+                        <h1>
                             <span>Hi, I'm Aakash</span>
                             <span class="gradient-text">Biomedical Engineer</span>
                         </h1>
                         <p>
-                            <span class="text-reveal">Computational biologist and protein engineer specializing in</span>
-                            <span class="text-reveal highlighted">molecular dynamics</span>
-                            <span class="text-reveal">simulations and biomolecular design.</span>
+                            Computational biologist and protein engineer specializing in 
+                            <span class="molecular-dynamics">molecular dynamics</span> 
+                            simulations and biomolecular design.
                         </p>
                         
                         <div class="hero-buttons">
@@ -115,6 +127,12 @@
                     </div>
                     
                     <div class="hero-visual fade-in-delayed">
+                        <div class="profile-wrapper">
+                            <div class="profile-container">
+                                <img src="aakash-profile.jpg" alt="Aakash Shrestha" class="profile-image">
+                                <div class="profile-frame"></div>
+                            </div>
+                        </div>
                         <div class="protein-container">
                             <canvas id="protein-canvas"></canvas>
                             <div class="glow-orbit"></div>
@@ -425,7 +443,7 @@
                 </div>
                 
                 <div class="skills-grid">
-                    <!-- Skill Category 1 -->
+                    <!-- Molecular Modeling -->
                     <div class="skill-card reveal-element hover-lift">
                         <div class="skill-icon">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -448,7 +466,7 @@
                         </div>
                     </div>
                     
-                    <!-- Skill Category 2 -->
+                    <!-- Protein Design -->
                     <div class="skill-card reveal-element hover-lift" data-delay="0.1">
                         <div class="skill-icon">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -466,7 +484,7 @@
                         </div>
                     </div>
                     
-                    <!-- Skill Category 3 -->
+                    <!-- Programming -->
                     <div class="skill-card reveal-element hover-lift" data-delay="0.2">
                         <div class="skill-icon">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -485,7 +503,7 @@
                         </div>
                     </div>
                     
-                    <!-- Skill Category 4 -->
+                    <!-- Laboratory Techniques -->
                     <div class="skill-card reveal-element hover-lift" data-delay="0.3">
                         <div class="skill-icon">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -804,5 +822,30 @@
 
     <!-- Scripts -->
     <script src="script.js"></script>
+    
+    <!-- Backup Loader Fix -->
+    <script>
+      // Ensures the loader disappears even if there are JS issues
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          const loader = document.querySelector('.loader-wrapper');
+          if (loader) {
+            loader.style.opacity = '0';
+            loader.style.visibility = 'hidden';
+          }
+          
+          // Force fade-in elements to show
+          document.querySelectorAll('.fade-in, .fade-in-delayed').forEach(el => {
+            el.style.opacity = '1';
+          });
+          
+          // Force background canvas to load correctly
+          const bgCanvas = document.getElementById('molecular-bg');
+          if (bgCanvas && !bgCanvas.style.opacity) {
+            bgCanvas.style.opacity = '0.3';
+          }
+        }, 2000);
+      });
+    </script>
 </body>
 </html>
