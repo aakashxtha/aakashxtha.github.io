@@ -684,5 +684,17 @@
 
     <!-- Scripts -->
     <script src="script.js"></script>
+    <script>
+      // Backup loading screen removal
+      window.onload = function() {
+        setTimeout(function() {
+          const loadingScreen = document.getElementById('loading-screen');
+          if (loadingScreen) {
+            loadingScreen.style.opacity = "0";
+            loadingScreen.style.visibility = "hidden";
+          }
+        }, 2000);
+      }
+    </script>
 </body>
 </html>
