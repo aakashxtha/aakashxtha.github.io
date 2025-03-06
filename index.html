@@ -3,104 +3,686 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aakash Shrestha - Connect With Me</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #000000, #1a1a1a);
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .container {
-            text-align: center;
-            padding: 2rem;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            width: 90%;
-            max-width: 400px;
-        }
-        .profile-pic {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            margin: 0 auto 1rem;
-            border: 4px solid #fff;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            background-image: url('aakash-profile.jpg');
-            background-size: cover;
-            background-position: center;
-        }
-        h1 {
-            margin: 1rem 0;
-            font-size: 2rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        .tagline {
-            font-style: italic;
-            margin-bottom: 1.5rem;
-            color: #cccccc;
-        }
-        .links {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            font-weight: bold;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .btn-linkedin {
-            background: linear-gradient(45deg, #0077b5, #00a0dc);
-        }
-        .btn-github {
-            background: linear-gradient(45deg, #333, #4a4a4a);
-        }
-        .btn:hover, .btn:focus {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-        }
-        @media (min-width: 768px) {
-            .container {
-                padding: 3rem;
-            }
-            h1 {
-                font-size: 2.5rem;
-            }
-            .profile-pic {
-                width: 200px;
-                height: 200px;
-            }
-            .links {
-                flex-direction: row;
-                justify-content: center;
-            }
-        }
-    </style>
+    <title>Aakash Shrestha | Computational Biologist</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Feather Icons (alternative to Lucide) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png">
 </head>
 <body>
-    <div class="container">
-        <div class="profile-pic"></div>
-        <h1>Aakash Shrestha</h1>
-        <div class="links">
-            <a href="https://www.linkedin.com/in/aakashshrestha395/" target="_blank" class="btn btn-linkedin">LinkedIn</a>
-            <a href="https://github.com/aakashxtha" target="_blank" class="btn btn-github">GitHub</a>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="spinner-container">
+                <div class="spinner spinner-1"></div>
+                <div class="spinner spinner-2"></div>
+            </div>
+            <p class="loading-text">Loading Protein Simulation...</p>
         </div>
     </div>
+
+    <!-- Background Canvas for Particles -->
+    <canvas id="particles-canvas" class="particles-canvas"></canvas>
+
+    <!-- Custom Cursor -->
+    <div id="custom-cursor" class="custom-cursor"></div>
+
+    <!-- Navigation -->
+    <nav id="main-nav" class="main-nav">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo">
+                    <span>&lt;</span>
+                    Aakash Shrestha
+                    <span>/&gt;</span>
+                    <div class="status-dot"></div>
+                </div>
+                <div class="nav-links desktop-nav">
+                    <button class="nav-link active" data-section="home">Home</button>
+                    <button class="nav-link" data-section="about">About</button>
+                    <button class="nav-link" data-section="experience">Experience</button>
+                    <button class="nav-link" data-section="projects">Projects</button>
+                    <button class="nav-link" data-section="skills">Skills</button>
+                    <button class="nav-link" data-section="education">Education</button>
+                    <button class="nav-link" data-section="contact">Contact</button>
+                </div>
+                <div class="mobile-menu-btn">
+                    <i data-feather="menu"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation Menu -->
+    <div id="mobile-nav" class="mobile-nav">
+        <div class="mobile-nav-content">
+            <button class="mobile-nav-link" data-section="home">Home</button>
+            <button class="mobile-nav-link" data-section="about">About</button>
+            <button class="mobile-nav-link" data-section="experience">Experience</button>
+            <button class="mobile-nav-link" data-section="projects">Projects</button>
+            <button class="mobile-nav-link" data-section="skills">Skills</button>
+            <button class="mobile-nav-link" data-section="education">Education</button>
+            <button class="mobile-nav-link" data-section="contact">Contact</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero-section">
+            <div class="bg-grid"></div>
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text reveal-element">
+                        <h1 class="gradient-text">
+                            <span>Hi, I'm Aakash</span>
+                            <span>Biomedical Engineer</span>
+                        </h1>
+                        <p>
+                            <span class="text-reveal">Computational biologist and protein engineer specializing in</span>
+                            <span class="highlighted text-reveal">molecular dynamics</span>
+                            <span class="text-reveal">simulations and biomolecular design.</span>
+                        </p>
+                        
+                        <div class="hero-buttons">
+                            <button class="primary-btn" data-section="projects">
+                                View My Work
+                                <i data-feather="arrow-right"></i>
+                            </button>
+                            <button class="secondary-btn" data-section="contact">
+                                Contact Me
+                            </button>
+                        </div>
+                        
+                        <!-- Amino acid sequence -->
+                        <div class="amino-acids">
+                            <div class="aa-bubble" style="--delay: 0.1s; --color: #4F46E5;">A</div>
+                            <div class="aa-bubble" style="--delay: 0.2s; --color: #818CF8;">K</div>
+                            <div class="aa-bubble" style="--delay: 0.3s; --color: #60A5FA;">S</div>
+                            <div class="aa-bubble" style="--delay: 0.4s; --color: #34D399;">H</div>
+                            <div class="aa-bubble" style="--delay: 0.5s; --color: #4F46E5;">R</div>
+                            <div class="aa-bubble" style="--delay: 0.6s; --color: #818CF8;">E</div>
+                            <div class="aa-bubble" style="--delay: 0.7s; --color: #60A5FA;">S</div>
+                            <div class="aa-bubble" style="--delay: 0.8s; --color: #34D399;">T</div>
+                            <div class="aa-bubble" style="--delay: 0.9s; --color: #4F46E5;">H</div>
+                            <div class="aa-bubble" style="--delay: 1.0s; --color: #818CF8;">A</div>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-visual reveal-element">
+                        <div class="protein-container">
+                            <!-- Protein Canvas -->
+                            <canvas id="protein-canvas" width="320" height="320"></canvas>
+                            
+                            <!-- Rotating rings -->
+                            <div class="rotating-ring ring-1"></div>
+                            <div class="rotating-ring ring-2"></div>
+                            
+                            <!-- Floating labels -->
+                            <div class="floating-label label-1">Rosetta</div>
+                            <div class="floating-label label-2">PyMol</div>
+                            <div class="floating-label label-3">NAMD</div>
+                            <div class="floating-label label-4">AlphaFold</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Scroll indicator -->
+            <div id="scroll-indicator" class="scroll-indicator">
+                <span>Scroll Down</span>
+                <i data-feather="chevron-down"></i>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about-section">
+            <div class="dna-bg"></div>
+            <div class="container">
+                <div class="section-header reveal-element">
+                    <h2>About Me</h2>
+                    <div class="section-divider"></div>
+                </div>
+                
+                <div class="about-content">
+                    <div class="about-text reveal-element">
+                        <h3>My Journey</h3>
+                        <p>
+                            As a biomedical engineering student at Florida International University, I've cultivated expertise in computational biology, molecular modeling, and protein engineering. My passion lies at the intersection of computational methods and biological applications, particularly in developing tools and approaches that can accelerate drug discovery and therapeutic development.
+                        </p>
+                        <p>
+                            Through research experiences at prestigious institutions like Arizona State University's Biodesign Institute and the National Renewable Energy Laboratory, I've developed and implemented novel computational methods to address complex challenges in protein dynamics, enzyme design, and polymer behavior. I'm driven by the potential of making healthcare more accessible through computational innovation.
+                        </p>
+                    </div>
+                    
+                    <div class="about-interests reveal-element">
+                        <div class="interests-card">
+                            <h3>
+                                <i data-feather="cpu"></i>
+                                Research Interests
+                            </h3>
+                            <ul>
+                                <li>Computational enzyme design and optimization</li>
+                                <li>Integration of protein dynamics into molecular modeling</li>
+                                <li>Machine learning applications in protein engineering</li>
+                                <li>Sustainable materials development through simulation</li>
+                                <li>Accelerating drug discovery with computational methods</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="experience-section">
+            <div class="grid-bg"></div>
+            <div class="container">
+                <div class="section-header reveal-element">
+                    <h2>Research Experience</h2>
+                    <div class="section-divider"></div>
+                </div>
+                
+                <div class="timeline">
+                    <!-- Experience 1 -->
+                    <div class="timeline-item reveal-element">
+                        <div class="timeline-marker">
+                            <div class="dot"></div>
+                            <div class="line"></div>
+                        </div>
+                        
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <div class="timeline-title">
+                                    <h3>Rosetta Commons REU Intern</h3>
+                                    <p>ASU Biodesign Institute</p>
+                                </div>
+                                <div class="timeline-date">
+                                    <p>May 2024 - August 2024</p>
+                                    <p>Tempe, Arizona</p>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-body">
+                                <ul>
+                                    <li>Led computational research in protein engineering focusing on enzyme design and dynamics</li>
+                                    <li>Engineered novel computational methods to address challenges in protein dynamics</li>
+                                    <li>Presented research findings on TEM-1 β-Lactamase design at the 2024 Summer Rosetta Conference</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Experience 2 -->
+                    <div class="timeline-item reveal-element">
+                        <div class="timeline-marker">
+                            <div class="dot"></div>
+                            <div class="line"></div>
+                        </div>
+                        
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <div class="timeline-title">
+                                    <h3>STAR Intern</h3>
+                                    <p>National Renewable Energy Laboratory</p>
+                                </div>
+                                <div class="timeline-date">
+                                    <p>May 2023 - July 2023</p>
+                                    <p>Golden, Colorado</p>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-body">
+                                <ul>
+                                    <li>Conducted research on biodegradability of synthetic polymers (nylon 6,6 and nylon 6,10)</li>
+                                    <li>Developed molecular models using CHARMM force fields</li>
+                                    <li>Executed high-performance computing simulations to analyze polymer behavior</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Experience 3 -->
+                    <div class="timeline-item reveal-element">
+                        <div class="timeline-marker">
+                            <div class="dot"></div>
+                            <div class="line"></div>
+                        </div>
+                        
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <div class="timeline-title">
+                                    <h3>Computational Biophysics Research Assistant</h3>
+                                    <p>Florida International University</p>
+                                </div>
+                                <div class="timeline-date">
+                                    <p>April 2022 - Present</p>
+                                    <p>Miami, Florida</p>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-body">
+                                <ul>
+                                    <li>Built computational models for cellulose-graphene composite systems</li>
+                                    <li>Designed Python scripts for generating complex molecular crystal structures</li>
+                                    <li>Generated 3D structures of circular RNA using MXFold and Rosetta</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Experience 4 -->
+                    <div class="timeline-item reveal-element">
+                        <div class="timeline-marker">
+                            <div class="dot"></div>
+                            <div class="line"></div>
+                        </div>
+                        
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <div class="timeline-title">
+                                    <h3>Lead Learning Assistant</h3>
+                                    <p>FIU Mathematics Department</p>
+                                </div>
+                                <div class="timeline-date">
+                                    <p>January 2022 - Present</p>
+                                    <p>Miami, Florida</p>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-body">
+                                <ul>
+                                    <li>Lead weekly meetings for a team of 8-10 Learning Assistants</li>
+                                    <li>Provide tutoring for College Algebra, Pre-Calculus, and Trigonometry</li>
+                                    <li>Volunteer in MDCPS Saturday School Project guiding middle school students</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="projects-section">
+            <div class="protein-bg"></div>
+            <div class="container">
+                <div class="section-header reveal-element">
+                    <h2>Notable Projects</h2>
+                    <div class="section-divider"></div>
+                </div>
+                
+                <div class="projects-grid">
+                    <!-- Project 1 -->
+                    <div class="project-card reveal-element">
+                        <div class="project-header"></div>
+                        <div class="project-content">
+                            <h3>Automated Therapeutic Bra for Post-Operative Care</h3>
+                            <div class="project-meta">
+                                <span class="project-role">Technical Lead</span>
+                                <span class="project-period">August 2024 - Present</span>
+                            </div>
+                            <p>Designing and optimizing dual-pump mechanism with integrated pressure sensors for a Class II medical device to prevent capsular contracture.</p>
+                            <div class="project-tech">
+                                <span>Arduino</span>
+                                <span>Pressure Sensors</span>
+                                <span>Control Systems</span>
+                                <span>UI Design</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Project 2 -->
+                    <div class="project-card reveal-element">
+                        <div class="project-header"></div>
+                        <div class="project-content">
+                            <h3>Enzyme Design & Dynamics Integration</h3>
+                            <div class="project-meta">
+                                <span class="project-role">Research Intern</span>
+                                <span class="project-period">Summer 2024</span>
+                            </div>
+                            <p>Developed a Python interface to incorporate MARTINI coarse-grain simulations into PyRosetta for rapid dynamic analysis after protein design.</p>
+                            <div class="project-tech">
+                                <span>PyRosetta</span>
+                                <span>MARTINI</span>
+                                <span>Python</span>
+                                <span>Molecular Dynamics</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Project 3 -->
+                    <div class="project-card reveal-element">
+                        <div class="project-header"></div>
+                        <div class="project-content">
+                            <h3>Nylon Degradation Analysis</h3>
+                            <div class="project-meta">
+                                <span class="project-role">Research Intern</span>
+                                <span class="project-period">Summer 2023</span>
+                            </div>
+                            <p>Researched biodegradability of synthetic polymers using molecular dynamics simulations to identify key degradation mechanisms.</p>
+                            <div class="project-tech">
+                                <span>CHARMM</span>
+                                <span>Molecular Modeling</span>
+                                <span>HPC</span>
+                                <span>NAMD</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Project 4 -->
+                    <div class="project-card reveal-element">
+                        <div class="project-header"></div>
+                        <div class="project-content">
+                            <h3>Cellulose-Graphene Composite Modeling</h3>
+                            <div class="project-meta">
+                                <span class="project-role">Research Assistant</span>
+                                <span class="project-period">2022 - Present</span>
+                            </div>
+                            <p>Created computational models and Python scripts for generating complex molecular crystal structures of cellulose-graphene composites.</p>
+                            <div class="project-tech">
+                                <span>Python</span>
+                                <span>MD Simulations</span>
+                                <span>Molecular Modeling</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="skills-section">
+            <div class="binary-bg"></div>
+            <div class="container">
+                <div class="section-header reveal-element">
+                    <h2>Technical Skills</h2>
+                    <div class="section-divider"></div>
+                </div>
+                
+                <div class="skills-grid">
+                    <!-- Skill Category 1 -->
+                    <div class="skill-card reveal-element">
+                        <div class="skill-icon">
+                            <i data-feather="microscope"></i>
+                        </div>
+                        <h3>Molecular Modeling</h3>
+                        <div class="skill-tags">
+                            <span>NAMD</span>
+                            <span>CHARMM</span>
+                            <span>VMD</span>
+                            <span>PyMol</span>
+                            <span>Chimera</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Skill Category 2 -->
+                    <div class="skill-card reveal-element">
+                        <div class="skill-icon">
+                            <i data-feather="database"></i>
+                        </div>
+                        <h3>Protein Design</h3>
+                        <div class="skill-tags">
+                            <span>PyRosetta</span>
+                            <span>RFDiffusion</span>
+                            <span>ProteinMPNN</span>
+                            <span>AlphaFold</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Skill Category 3 -->
+                    <div class="skill-card reveal-element">
+                        <div class="skill-icon">
+                            <i data-feather="code"></i>
+                        </div>
+                        <h3>Programming</h3>
+                        <div class="skill-tags">
+                            <span>Python</span>
+                            <span>MATLAB</span>
+                            <span>Git</span>
+                            <span>Bash</span>
+                            <span>Linux</span>
+                            <span>HPC</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Skill Category 4 -->
+                    <div class="skill-card reveal-element">
+                        <div class="skill-icon">
+                            <i data-feather="cpu"></i>
+                        </div>
+                        <h3>Laboratory Techniques</h3>
+                        <div class="skill-tags">
+                            <span>PCR</span>
+                            <span>Gel Electrophoresis</span>
+                            <span>DNA Extraction</span>
+                            <span>Western Blot</span>
+                            <span>Spectrophotometry</span>
+                            <span>HPLC</span>
+                            <span>Column Chromatography</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education & Presentations Section -->
+        <section id="education" class="education-section">
+            <div class="molecule-bg"></div>
+            <div class="container">
+                <div class="section-header reveal-element">
+                    <h2>Education & Presentations</h2>
+                    <div class="section-divider"></div>
+                </div>
+                
+                <div class="education-content">
+                    <!-- Education Card -->
+                    <div class="education-card reveal-element">
+                        <div class="card-header">
+                            <div class="header-icon">
+                                <i data-feather="book-open"></i>
+                            </div>
+                            <h3>Education</h3>
+                        </div>
+                        
+                        <div class="university-info">
+                            <h4>Florida International University</h4>
+                            <p class="location">Miami, FL</p>
+                            <p class="degree">Bachelor of Science in Biomedical Engineering</p>
+                            <p>Expected May 2025</p>
+                            <p>GPA: 3.94/4.00</p>
+                        </div>
+                        
+                        <div class="awards-section">
+                            <h5>Awards & Honors</h5>
+                            <ul>
+                                <li>
+                                    <i data-feather="award"></i>
+                                    <span>Ambassador Scholarship</span>
+                                </li>
+                                <li>
+                                    <i data-feather="award"></i>
+                                    <span>SGA Undergraduate Excellence Scholarship</span>
+                                </li>
+                                <li>
+                                    <i data-feather="award"></i>
+                                    <span>SGA International Scholarship</span>
+                                </li>
+                                <li>
+                                    <i data-feather="award"></i>
+                                    <span>Arthrex Scholarship</span>
+                                </li>
+                                <li>
+                                    <i data-feather="award"></i>
+                                    <span>Honors College Student</span>
+                                </li>
+                                <li>
+                                    <i data-feather="award"></i>
+                                    <span>Dean's List: Fall 2021 - Spring 2024 (7 consecutive semesters)</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Presentations Card -->
+                    <div class="presentations-card reveal-element">
+                        <div class="card-header">
+                            <div class="header-icon">
+                                <i data-feather="file-text"></i>
+                            </div>
+                            <h3>Presentations</h3>
+                        </div>
+                        
+                        <div class="presentations-list">
+                            <div class="presentation-item">
+                                <h4>Computational Design of TEM-1 β-Lactamase Using PyRosetta: Step Towards Integrating Dynamics into Computational Enzyme Design</h4>
+                                <p class="presentation-event">Summer RosettaCon 2024</p>
+                                <div class="presentation-meta">
+                                    <span>Cle Elum, WA</span>
+                                    <span>August 8, 2024</span>
+                                </div>
+                            </div>
+                            
+                            <div class="presentation-item">
+                                <h4>From Simulation to Solution: Decoding Nylons for a Sustainable Future</h4>
+                                <p class="presentation-event">Summer 2023 Intern Poster Symposium</p>
+                                <div class="presentation-meta">
+                                    <span>NREL, Golden, CO</span>
+                                    <span>July 27, 2023</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section">
+            <div class="data-flow-bg"></div>
+            <div class="container">
+                <div class="section-header reveal-element">
+                    <h2>Get In Touch</h2>
+                    <div class="section-divider"></div>
+                </div>
+                
+                <div class="contact-card reveal-element">
+                    <div class="card-gradient">
+                        <div class="card-inner">
+                            <div class="contact-columns">
+                                <div class="contact-info">
+                                    <h3>
+                                        <span class="icon-circle">
+                                            <i data-feather="mail"></i>
+                                        </span>
+                                        Contact Information
+                                    </h3>
+                                    <ul class="contact-list">
+                                        <li>
+                                            <div class="contact-icon">
+                                                <i data-feather="mail"></i>
+                                            </div>
+                                            <span>shresthaaakash678@gmail.com</span>
+                                        </li>
+                                        <li>
+                                            <div class="contact-icon">
+                                                <i data-feather="github"></i>
+                                            </div>
+                                            <a href="https://github.com/aakashxtha" target="_blank">
+                                                github.com/aakashxtha
+                                                <i data-feather="external-link" class="icon-small"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <div class="contact-icon">
+                                                <i data-feather="linkedin"></i>
+                                            </div>
+                                            <a href="https://www.linkedin.com/in/aakashshrestha395" target="_blank">
+                                                linkedin.com/in/aakashshrestha395
+                                                <i data-feather="external-link" class="icon-small"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    
+                                    <div class="contact-quote">
+                                        <p>"I'm always interested in discussing new research opportunities or collaborations in computational biology and protein engineering."</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="contact-form">
+                                    <h3>
+                                        <span class="icon-circle">
+                                            <i data-feather="message-circle"></i>
+                                        </span>
+                                        Send Me a Message
+                                    </h3>
+                                    <form id="contact-form">
+                                        <div class="form-group">
+                                            <input type="text" id="name" placeholder="Your Name" required>
+                                            <div class="form-underline"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="email" id="email" placeholder="Your Email" required>
+                                            <div class="form-underline"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <textarea id="message" rows="5" placeholder="Your Message" required></textarea>
+                                            <div class="form-underline"></div>
+                                        </div>
+                                        <button type="submit" class="submit-btn">
+                                            <span>Send Message</span>
+                                            <i data-feather="arrow-right"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <div class="footer-logo">
+                        <span>&lt;</span> Aakash Shrestha <span>/&gt;</span>
+                    </div>
+                    <p class="copyright">© 2025. All rights reserved.</p>
+                    <p class="footer-tagline">Computational Biologist & Protein Engineer</p>
+                </div>
+                
+                <div class="footer-social">
+                    <div class="social-links">
+                        <a href="https://github.com/aakashxtha" target="_blank">
+                            <div class="social-btn">
+                                <i data-feather="github"></i>
+                            </div>
+                        </a>
+                        <a href="https://www.linkedin.com/in/aakashshrestha395" target="_blank">
+                            <div class="social-btn">
+                                <i data-feather="linkedin"></i>
+                            </div>
+                        </a>
+                        <a href="mailto:shresthaaakash678@gmail.com">
+                            <div class="social-btn">
+                                <i data-feather="mail"></i>
+                            </div>
+                        </a>
+                    </div>
+                    <p class="footer-note">Design inspired by computational biology</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
 </body>
 </html>
