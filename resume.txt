@@ -1,0 +1,41 @@
+Aakash Shrestha
+786-553-0235 | shresthaaakash678@gmail.com | GitHub: https://github.com/aakashxtha | LinkedIn: https://www.linkedin.com/in/aakashshrestha395/
+
+EDUCATION
+Florida International University, Miami, FL
+Bachelor of Science in Biomedical Engineering                                    April 2025
+• GPA: 3.94/4.00 | Honors College Student | Dean's List: Fall 2021 - Spring 2025 (8 semesters)
+• Relevant Coursework: General Biochemistry, Genetics, Molecular Engineering, Biomaterials, Engineering Analysis of Biological Systems, BME Data Analysis
+
+TECHNICAL SKILLS
+Molecular Dynamics: NAMD, CHARMM, GROMACS, MARTINI Coarse-Graining, VMD, PyMol
+Protein Design: PyRosetta, Rosetta, RFdiffusion, ProteinMPNN, AlphaFold, Boltz-2
+Programming & Data Analysis: Python, MATLAB, C++, Bash, Git, Linux, High Performance Computing
+Laboratory: PCR, Gel Electrophoresis, Western Blot, Spectrophotometry, HPLC, DNA Extraction
+
+INTERNSHIP EXPERIENCE
+Rosetta Commons, Tempe, AZ
+Rosetta REU Intern                                                               June 2024 - August 2024
+• Developed Python interface integrating MARTINI coarse-grain simulations with PyRosetta workflows, enabling rapid analysis of 500+ TEM-1 β-Lactamase enzyme variants
+• Reduced protein modeling computational time from hours to minutes through algorithmic improvements and parallelization of structure prediction pipelines
+• Collaborated with interdisciplinary team of structural biologists and computational chemists to validate computational predictions against experimental data
+
+National Renewable Energy Laboratory, Golden, CO
+Student Training in Applied Research (STAR) Intern                               May 2023 - July 2023
+• Investigated polymer degradation mechanisms through molecular dynamics simulations, developing models for nylon 6,6 and nylon 6,10 using Cambridge Structural Database coordinates
+• Resolved simulation instabilities through systematic optimization of force field parameters, achieving stable 100-nanosecond production runs for statistical analysis
+• Implemented automated workflows on NREL's HPC infrastructure to examine polymer behavior under varying environmental conditions, generating insights for sustainable materials development
+• Documented computational protocols and collaborated with experimental teams to ensure reproducibility and validation of theoretical predictions
+
+WORK EXPERIENCE
+Computational Biophysics lab, Florida International University, Miami, FL
+Research Assistant                                                               April 2022 - Present
+• Design macrocyclic peptides using RFdiffusion and ProteinMPNN, then validate structural stability and binding affinity through molecular dynamics simulations
+• Developed Python algorithms for automated molecular structure generation, reducing preparation time from days to hours while maintaining accuracy for molecular dynamics simulations
+• Built computational models for cellulose-graphene composite systems and generated 3D structures of circular RNA using MXFold2 and Rosetta, followed by structure refinement with NAMD
+• Optimized molecular dynamics workflows on GPU-accelerated HPC clusters, achieving 40% reduction in computational time through improved parallelization and resource allocation strategies
+
+PRESENTATIONS
+Poster Presentation: "Computational Design of TEM-1 β-Lactamase Using PyRosetta: Step Towards Integrating Dynamics into Computational Enzyme Design," Summer RosettaCon 2024, Cle Elum, WA, August 8, 2024
+
+Poster Presentation: "From Simulation to Solution: Decoding Nylons for a Sustainable Future," Summer 2023 Intern Poster Symposium. NREL, Golden, CO, July 27, 2023

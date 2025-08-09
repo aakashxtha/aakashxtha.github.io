@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Aakash Shrestha — Portfolio</title>
+    <meta name="description" content="Portfolio of Aakash Shrestha — Biomedical Engineering student focusing on computational biophysics, molecular dynamics, and protein design." />
+    <meta name="keywords" content="computational biophysics, molecular dynamics, protein design, biomedical engineering, PyRosetta, NAMD, GROMACS, machine learning, HPC" />
+    <meta name="author" content="Aakash Shrestha" />
+    <meta name="theme-color" content="#2563eb" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://aakash-portfolio.netlify.app/" />
+    <meta property="og:title" content="Aakash Shrestha — Computational Biophysics Researcher" />
+    <meta property="og:description" content="Biomedical Engineering student specializing in computational biophysics, molecular dynamics simulations, and protein design using advanced HPC systems." />
+    <meta property="og:image" content="https://aakash-portfolio.netlify.app/og-image.jpg" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://aakash-portfolio.netlify.app/" />
+    <meta property="twitter:title" content="Aakash Shrestha — Computational Biophysics Researcher" />
+    <meta property="twitter:description" content="Biomedical Engineering student specializing in computational biophysics, molecular dynamics simulations, and protein design using advanced HPC systems." />
+    <meta property="twitter:image" content="https://aakash-portfolio.netlify.app/og-image.jpg" />
+    <link rel="preload" href="./fonts/inter.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="./fonts/space-grotesk.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="./fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    
+    <!-- Critical CSS inlined for faster rendering -->
+    <style>
+      :root{--bg:#ffffff;--bg-2:#f8fafc;--text:#0f172a;--text-dim:#475569;--accent:#2563eb;--border:rgba(15,23,42,0.08);--shadow-soft:0 6px 18px rgba(15,23,42,0.08);--font-size-base:1rem;--font-size-lg:1.125rem;--font-size-2xl:1.5rem;--font-size-4xl:2.25rem;--font-size-6xl:3.75rem;--line-height-tight:1.25;--line-height-normal:1.5;--letter-spacing-tight:-0.025em;--letter-spacing-normal:0}
+      *{box-sizing:border-box}
+      html,body{height:100%;margin:0}
+      html{scroll-behavior:smooth}
+      body{background:linear-gradient(180deg,var(--bg) 0%,var(--bg-2) 100%);color:var(--text);font-family:Inter,system-ui,-apple-system,sans-serif;font-size:var(--font-size-base);line-height:var(--line-height-normal);letter-spacing:var(--letter-spacing-normal);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+      h1,h2,h3{font-family:'Space Grotesk','Inter',system-ui,sans-serif;color:var(--text);margin:0 0 1rem;font-weight:600;line-height:var(--line-height-tight);letter-spacing:var(--letter-spacing-tight)}
+      h1{font-size:clamp(var(--font-size-4xl),5vw,var(--font-size-6xl));font-weight:700;line-height:1.1;letter-spacing:-0.04em;margin-bottom:1.5rem}
+      h2{font-size:clamp(var(--font-size-2xl),3.5vw,var(--font-size-4xl));font-weight:600;margin-bottom:1.25rem}
+      .container{max-width:1200px;padding:0 clamp(1rem,4vw,2rem);margin:0 auto}
+      .section{padding:clamp(4rem,8vw,6rem) 0}
+      .hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden}
+      .hero-content{position:relative;z-index:2}
+      .skip-link{position:absolute;top:-40px;left:16px;background:var(--accent);color:white;padding:8px 16px;text-decoration:none;border-radius:4px;z-index:1000}
+      .skip-link:focus{top:16px}
+      .scroll-progress{position:fixed;top:0;left:0;width:100%;height:3px;background:rgba(91,140,255,0.1);z-index:100}
+      .scroll-progress span{display:block;height:100%;background:var(--accent);width:0%;transition:width 0.1s ease}
+    </style>
+    
+    <!-- Load non-critical CSS asynchronously -->
+    <link rel="preload" href="fonts.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+      <link rel="stylesheet" href="fonts.css">
+      <link rel="stylesheet" href="styles.css">
+    </noscript>
+    <link rel="preconnect" href="https://formspree.io" crossorigin>
+    <link rel="preload" href="./IMG_7377.JPG" as="image" imagesizes="(max-width: 980px) 70vw, 420px">
+  </head>
+  <body class="clean-background">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <!-- Particle System -->
+    <div class="particle-system" id="particle-system" aria-hidden="true"></div>
+
+    <!-- Scroll progress bar -->
+    <div id="scroll-progress" class="scroll-progress" aria-hidden="true"><span></span></div>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a href="#hero" class="brand" aria-label="Home">
+          <span>AS</span>
+        </a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul>
+            <li><a href="#about" data-nav>About</a></li>
+            <li><a href="#skills" data-nav>Skills</a></li>
+            <li><a href="#experience" data-nav>Experience</a></li>
+            <li><a href="#projects" data-nav>Projects</a></li>
+            <li><a href="#contact" data-nav>Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <div class="divider" aria-hidden="true"></div>
+      <!-- Hero Section -->
+      <section id="hero" class="section hero light-hero">
+        <div class="hero-wrap">
+          <div class="shapes" aria-hidden="true">
+            <span class="shape s1" data-parallax="0.15"></span>
+            <span class="shape s2" data-parallax="0.1"></span>
+            <span class="shape s3" data-parallax="0.2"></span>
+            <span class="shape s4" data-parallax="0.05"></span>
+          </div>
+          <div class="container">
+            <div class="hero-content reveal">
+              <h1 class="hero-title kinetic-text" data-text="Aakash Shrestha">Aakash Shrestha</h1>
+              <p class="hero-subtitle">Computational Biophysics · Protein Design · Molecular Dynamics</p>
+              <p class="hero-tagline">Building clean, reliable computational pipelines for proteins and polymers.</p>
+              <div class="hero-cta">
+                <a class="button primary" href="#contact">Get in touch</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- About Section -->
+      <section id="about" class="section">
+        <div class="container grid-2">
+          <div class="about-text reveal">
+            <h2 class="section-title">About</h2>
+            <p>
+              <span class="lead">I'm a recent Biomedical Engineering graduate from Florida International University (BS, April 2025) working at the intersection of</span>
+              computational biophysics and protein design. My work spans physics-based simulation (NAMD, GROMACS), generative protein design
+              (RFdiffusion, ProteinMPNN), and scalable analysis on HPC systems. I value clean experimental design, reproducibility, and elegant tools that make complex science simpler.
+            </p>
+            <ul class="about-facts">
+              <li>Honors College • Dean’s List (8 semesters)</li>
+              <li>Poster: Computational Design of TEM-1 β-Lactamase (RosettaCon 2024)</li>
+              <li>Poster: Decoding Nylons for a Sustainable Future (NREL 2023)</li>
+            </ul>
+          </div>
+          <div class="about-visual reveal">
+            <figure class="portrait" aria-label="Portrait of Aakash Shrestha">
+              <img 
+                src="./IMG_7377.JPG" 
+                alt="Aakash Shrestha"
+                loading="lazy" 
+                decoding="async"
+                sizes="(max-width: 980px) 70vw, 420px"
+              />
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills Section -->
+      <section id="skills" class="section">
+        <div class="container">
+          <h2 class="section-title reveal">Skills</h2>
+          <div class="skills-grid">
+            <div class="skill-card card reveal">
+              <h3>Molecular Dynamics</h3>
+              <ul>
+                <li>NAMD, CHARMM, GROMACS, MARTINI</li>
+                <li>Workflow optimization on GPU/HPC</li>
+                <li>Model construction & analysis (VMD, PyMol)</li>
+              </ul>
+              <div class="meters">
+                <div class="meter" data-progress="90"><span></span></div>
+              </div>
+            </div>
+            <div class="skill-card card reveal">
+              <h3>Protein Design</h3>
+              <ul>
+                <li>PyRosetta, Rosetta, RFdiffusion, ProteinMPNN</li>
+                <li>AlphaFold, structure refinement</li>
+                <li>Binding/stability evaluation</li>
+              </ul>
+              <div class="meters">
+                <div class="meter" data-progress="86"><span></span></div>
+              </div>
+            </div>
+            <div class="skill-card card reveal">
+              <h3>Programming & Data</h3>
+              <ul>
+                <li>Python, MATLAB, C++, Bash</li>
+                <li>Git, Linux, HPC job orchestration</li>
+                <li>Reproducible pipelines</li>
+              </ul>
+              <div class="meters">
+                <div class="meter" data-progress="82"><span></span></div>
+              </div>
+            </div>
+            <div class="skill-card card reveal">
+              <h3>Laboratory</h3>
+              <ul>
+                <li>PCR, Gel Electrophoresis, Western Blot</li>
+                <li>Spectrophotometry, HPLC, DNA Extraction</li>
+              </ul>
+              <div class="meters">
+                <div class="meter" data-progress="72"><span></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Experience Section -->
+      <section id="experience" class="section">
+        <div class="container">
+          <h2 class="section-title reveal">Experience</h2>
+
+          <div class="timeline">
+            <article class="timeline-item card reveal">
+              <div class="timeline-meta">
+                <h3>Rosetta Commons — Rosetta REU Intern</h3>
+                <span class="timeline-date">June 2024 – August 2024 · Tempe, AZ</span>
+              </div>
+              <ul class="timeline-points">
+                <li>Built a Python interface linking MARTINI coarse-grain MD with PyRosetta workflows to analyze <strong>500+ TEM-1 β-lactamase variants</strong>.</li>
+                <li>Reduced modeling runtime from hours to minutes by parallelizing structure prediction pipelines and streamlining I/O.</li>
+                <li>Validated computational predictions against experimental data with an interdisciplinary team of structural biologists and computational chemists.</li>
+              </ul>
+            </article>
+
+            <article class="timeline-item card reveal">
+              <div class="timeline-meta">
+                <h3>National Renewable Energy Laboratory — STAR Intern</h3>
+                <span class="timeline-date">May 2023 – July 2023 · Golden, CO</span>
+              </div>
+              <ul class="timeline-points">
+                <li>Investigated polymer degradation with MD, developing models for <strong>nylon 6,6 and 6,10</strong> from CSD coordinates.</li>
+                <li>Stabilized simulations via force-field tuning, achieving <strong>100 ns</strong> production runs for robust statistics.</li>
+                <li>Automated HPC workflows to explore environmental effects, improving throughput and reproducibility across runs.</li>
+              </ul>
+            </article>
+
+            <article class="timeline-item card reveal">
+              <div class="timeline-meta">
+                <h3>Computational Biophysics Lab, FIU — Research Assistant</h3>
+                <span class="timeline-date">April 2022 – Present · Miami, FL</span>
+              </div>
+              <ul class="timeline-points">
+                <li>Designed macrocyclic peptides with RFdiffusion/ProteinMPNN and validated stability/binding via MD.</li>
+                <li>Developed Python algorithms that cut molecular structure prep from <strong>days to hours</strong>.</li>
+                <li>Optimized MD workflows on GPU clusters for a <strong>~40% reduction</strong> in compute time.</li>
+                <li>Modeled cellulose–graphene composites and generated circular RNA 3D structures with MXFold2 and Rosetta.</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects Section -->
+      <section id="projects" class="section">
+        <div class="container">
+          <h2 class="section-title reveal">Projects</h2>
+          <div class="projects-grid">
+            <article class="project-card card reveal" tabindex="0">
+              <div class="project-thumb">
+                <img src="./projects/Pyrosetta.jpg" alt="Interface connecting MARTINI MD with PyRosetta" loading="lazy" decoding="async" />
+              </div>
+              <h3>PyRosetta × MARTINI Interface</h3>
+              <p>A lightweight Python layer connecting MARTINI coarse-grain MD with PyRosetta to rapidly evaluate variant stability and function.</p>
+                          <ul class="tags text-small">
+              <li>Python</li><li>PyRosetta</li><li>MARTINI</li><li>HPC</li>
+            </ul>
+              <div class="project-links">
+                <a href="#" aria-label="Project link">View</a>
+              </div>
+            </article>
+
+            <article class="project-card card reveal" tabindex="0">
+              <div class="project-thumb">
+                <img src="./projects/Nylon decrystallization.jpg" alt="Molecular dynamics of nylon polymer degradation" loading="lazy" decoding="async" />
+              </div>
+              <h3>Nylon Polymer Degradation MD</h3>
+              <p>Force-field optimization and long-timescale simulation of nylon 6,6 / 6,10 to study degradation pathways and stability.</p>
+              <ul class="tags text-small">
+                <li>GROMACS</li><li>CHARMM</li><li>Python</li>
+              </ul>
+              <div class="project-links">
+                <a href="#" aria-label="Project link">View</a>
+              </div>
+            </article>
+
+            <article class="project-card card reveal" tabindex="0">
+              <div class="project-thumb">
+                <img src="./projects/Macrocycle.jpg" alt="Macrocyclic peptide design workflow" loading="lazy" decoding="async" />
+              </div>
+              <h3>Macrocyclic Peptide Design Pipeline</h3>
+              <p>End-to-end RFdiffusion/ProteinMPNN pipeline with MD validation to design macrocycles with targeted binding profiles.</p>
+              <ul class="tags text-small">
+                <li>RFdiffusion</li><li>ProteinMPNN</li><li>NAMD</li>
+              </ul>
+              <div class="project-links">
+                <a href="#" aria-label="Project link">View</a>
+              </div>
+            </article>
+
+            <article class="project-card card reveal" tabindex="0">
+              <div class="project-thumb">
+                <img src="./projects/cellulosegraphene.jpg" alt="Cellulose–graphene composite modeling" loading="lazy" decoding="async" />
+              </div>
+              <h3>Cellulose–Graphene Composite Modeling</h3>
+              <p>Built multi-scale computational models to study interfacial behavior and mechanical properties in composite systems.</p>
+              <ul class="tags text-small">
+                <li>NAMD</li><li>VMD</li><li>Python</li>
+              </ul>
+              <div class="project-links">
+                <a href="#" aria-label="Project link">View</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section id="contact" class="section">
+        <div class="container">
+          <h2 class="section-title reveal">Contact</h2>
+          <div class="contact-grid">
+            <form id="contact-form" class="contact-form card reveal" action="https://formspree.io/f/xeojgpvk" method="POST" novalidate>
+              <div class="form-row">
+                <label for="name">Name</label>
+                <input id="name" name="name" type="text" placeholder="Your name" required />
+                <div class="field-error" id="name-error"></div>
+              </div>
+              <div class="form-row">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" placeholder="you@example.com" required />
+                <div class="field-error" id="email-error"></div>
+              </div>
+              <!-- Honeypot field for spam protection -->
+              <input type="text" name="_gotcha" style="display:none" />
+              <div class="form-row">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="5" placeholder="Hello Aakash…" required></textarea>
+                <div class="field-error" id="message-error"></div>
+              </div>
+              <button type="submit" class="button primary" id="submit-btn">
+                <span class="btn-text">Send Message</span>
+                <span class="btn-loading" style="display:none;">
+                  <svg class="loading-spinner" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="31.416" stroke-dashoffset="31.416">
+                      <animate attributeName="stroke-dasharray" dur="2s" values="0 31.416;15.708 15.708;0 31.416" repeatCount="indefinite"/>
+                      <animate attributeName="stroke-dashoffset" dur="2s" values="0;-15.708;-31.416" repeatCount="indefinite"/>
+                    </circle>
+                  </svg>
+                  Sending...
+                </span>
+              </button>
+              <div id="form-status" role="status" aria-live="polite"></div>
+            </form>
+
+            <div class="contact-info card reveal">
+              <ul class="contact-list">
+                <li>
+                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v14H3z M7 9h10v2H7z M7 13h10v2H7z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+                  <a href="mailto:shresthaaakash678@gmail.com">shresthaaakash678@gmail.com</a>
+                </li>
+                <li>
+                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h12v20H6z M9 5h6v2H9z M8 9h8v10H8z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+                  <a href="https://www.linkedin.com/in/aakashshrestha395/" rel="noopener" target="_blank">LinkedIn</a>
+                </li>
+                <li>
+                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4z M8 8h8v8H8z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+                  <a href="https://github.com/aakashxtha" rel="noopener" target="_blank">GitHub</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <p>© <span id="year"></span> Aakash Shrestha</p>
+        <a class="button subtle" href="#hero">Back to top</a>
+      </div>
+    </footer>
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Aakash Shrestha",
+      "jobTitle": "Biomedical Engineering Graduate & Computational Biophysics Researcher",
+      "description": "Biomedical Engineering student at Florida International University specializing in computational biophysics, molecular dynamics simulations, and protein design.",
+      "url": "https://aakash-portfolio.netlify.app/",
+      "email": "shresthaaakash678@gmail.com",
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "Florida International University",
+        "department": "Biomedical Engineering"
+      },
+      "knowsAbout": [
+        "Computational Biophysics",
+        "Molecular Dynamics",
+        "Protein Design",
+        "PyRosetta",
+        "NAMD",
+        "GROMACS",
+        "Machine Learning",
+        "High Performance Computing",
+        "Python Programming",
+        "Biomedical Engineering"
+      ],
+      "hasOccupation": {
+        "@type": "Occupation",
+        "name": "Research Assistant",
+        "occupationLocation": {
+          "@type": "Place",
+          "name": "Florida International University"
+        }
+      },
+      "sameAs": [
+        "https://www.linkedin.com/in/aakashshrestha395/",
+        "https://github.com/aakashxtha"
+      ]
+    }
+    </script>
+
+    <script src="script.js" defer></script>
+  </body>
+  </html>
+
+
