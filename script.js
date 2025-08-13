@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize kinetic typography
   initKineticText();
 
+
+
   // Smooth scroll (native behavior via CSS, but ensure offset behavior on Safari)
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', (e) => {
@@ -337,5 +339,7 @@ function initKineticText() {
     }, 500);
   });
 }
+
+
 
 

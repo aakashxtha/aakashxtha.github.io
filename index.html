@@ -71,15 +71,16 @@
         <a href="#hero" class="brand" aria-label="Home">
           <span>AS</span>
         </a>
-        <nav class="site-nav" aria-label="Primary">
-          <ul>
-            <li><a href="#about" data-nav>About</a></li>
-            <li><a href="#skills" data-nav>Skills</a></li>
-            <li><a href="#experience" data-nav>Experience</a></li>
-            <li><a href="#projects" data-nav>Projects</a></li>
-            <li><a href="#contact" data-nav>Contact</a></li>
-          </ul>
-        </nav>
+                  <nav class="site-nav" aria-label="Primary">
+            <ul>
+              <li><a href="#about" data-nav>About</a></li>
+              <li><a href="#skills" data-nav>Skills</a></li>
+              <li><a href="#experience" data-nav>Experience</a></li>
+              <li><a href="#publications" data-nav>Publications</a></li>
+              <li><a href="#projects" data-nav>Projects</a></li>
+              <li><a href="#contact" data-nav>Contact</a></li>
+            </ul>
+          </nav>
       </div>
     </header>
 
@@ -118,9 +119,9 @@
               (RFdiffusion, ProteinMPNN), and scalable analysis on HPC systems. I value clean experimental design, reproducibility, and elegant tools that make complex science simpler.
             </p>
             <ul class="about-facts">
-              <li>Honors College • Dean’s List (8 semesters)</li>
-              <li>Poster: Computational Design of TEM-1 β-Lactamase (RosettaCon 2024)</li>
-              <li>Poster: Decoding Nylons for a Sustainable Future (NREL 2023)</li>
+              <li>Honors College • Dean's List (8 semesters)</li>
+              <li>Research experience at Rosetta Commons and NREL</li>
+              <li>Expertise in computational biophysics and protein design</li>
             </ul>
           </div>
           <div class="about-visual reveal">
@@ -235,6 +236,49 @@
         </div>
       </section>
 
+      <!-- Publications & Presentations Section -->
+      <section id="publications" class="section">
+        <div class="container">
+          <h2 class="section-title reveal">Publications & Presentations</h2>
+          <div class="publications-list">
+            
+            <article class="publication-item card reveal">
+              <div class="publication-content">
+                <h3>Computational Design of TEM-1 β-Lactamase Using PyRosetta</h3>
+                <p class="publication-subtitle">Step Towards Integrating Dynamics into Computational Enzyme Design</p>
+                <div class="publication-meta">
+                  <span class="conference">Summer RosettaCon 2024</span>
+                  <span class="location">Cle Elum, WA</span>
+                  <span class="date">August 8, 2024</span>
+                </div>
+                <div class="publication-actions">
+                  <button class="button primary view-poster-btn" data-poster="./posters/rosettacon-2024-poster.pdf" aria-label="View RosettaCon 2024 poster" onclick="window.open('./posters/rosettacon-2024-poster.pdf', '_blank')">
+                    View Poster
+                  </button>
+                </div>
+              </div>
+            </article>
+
+            <article class="publication-item card reveal">
+              <div class="publication-content">
+                <h3>From Simulation to Solution: Decoding Nylons for a Sustainable Future</h3>
+                <div class="publication-meta">
+                  <span class="conference">NREL Summer 2023 Intern Poster Symposium</span>
+                  <span class="location">Golden, CO</span>
+                  <span class="date">July 27, 2023</span>
+                </div>
+                <div class="publication-actions">
+                  <button class="button primary view-poster-btn" data-poster="./posters/nrel-2023-poster.pdf" aria-label="View NREL 2023 poster" onclick="window.open('./posters/nrel-2023-poster.pdf', '_blank')">
+                    View Poster
+                  </button>
+                </div>
+              </div>
+            </article>
+            
+          </div>
+        </div>
+      </section>
+
       <!-- Projects Section -->
       <section id="projects" class="section">
         <div class="container">
@@ -246,11 +290,11 @@
               </div>
               <h3>PyRosetta × MARTINI Interface</h3>
               <p>A lightweight Python layer connecting MARTINI coarse-grain MD with PyRosetta to rapidly evaluate variant stability and function.</p>
-                          <ul class="tags text-small">
-              <li>Python</li><li>PyRosetta</li><li>MARTINI</li><li>HPC</li>
-            </ul>
+              <ul class="tags text-small">
+                <li>Python</li><li>PyRosetta</li><li>MARTINI</li><li>HPC</li>
+              </ul>
               <div class="project-links">
-                <a href="#" aria-label="Project link">View</a>
+                <a href="https://github.com/aakashxtha/BTLDesign" target="_blank" rel="noopener" aria-label="View PyRosetta MARTINI Interface on GitHub">GitHub</a>
               </div>
             </article>
 
@@ -264,7 +308,7 @@
                 <li>GROMACS</li><li>CHARMM</li><li>Python</li>
               </ul>
               <div class="project-links">
-                <a href="#" aria-label="Project link">View</a>
+                <a href="https://ece.fiu.edu/news/ece-newsroom/articles/2023/09-02/news12.html" target="_blank" rel="noopener" aria-label="View Nylon Polymer Degradation presentation article">Article</a>
               </div>
             </article>
 
@@ -278,7 +322,7 @@
                 <li>RFdiffusion</li><li>ProteinMPNN</li><li>NAMD</li>
               </ul>
               <div class="project-links">
-                <a href="#" aria-label="Project link">View</a>
+                <span class="project-status">In Development</span>
               </div>
             </article>
 
@@ -292,7 +336,21 @@
                 <li>NAMD</li><li>VMD</li><li>Python</li>
               </ul>
               <div class="project-links">
-                <a href="#" aria-label="Project link">View</a>
+                <a href="https://github.com/aakashxtha/Cellulose_Modeling" target="_blank" rel="noopener" aria-label="View Cellulose Graphene Modeling on GitHub">GitHub</a>
+              </div>
+            </article>
+
+            <article class="project-card card reveal" tabindex="0">
+              <div class="project-thumb">
+                <img src="./projects/lysozomemd.jpg" alt="Lysozyme molecular dynamics analysis and pocket detection" loading="lazy" decoding="async" />
+              </div>
+              <h3>Lysozyme MD Analysis & Pocket Detection</h3>
+              <p>Comprehensive molecular dynamics simulation and structural analysis of lysozyme protein including RMSD/RMSF calculations and binding pocket identification.</p>
+              <ul class="tags text-small">
+                <li>GROMACS</li><li>Python</li><li>fpocket</li><li>VMD</li>
+              </ul>
+              <div class="project-links">
+                <a href="https://github.com/aakashxtha/lysozyme-md-analysis" target="_blank" rel="noopener" aria-label="View Lysozyme MD Analysis on GitHub">GitHub</a>
               </div>
             </article>
           </div>
