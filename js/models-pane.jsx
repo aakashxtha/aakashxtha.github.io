@@ -1,52 +1,55 @@
-// Models pane — .pdb files bundled in /site/models/
-// Split view: compact list on left, rich 3D viewer on right
+// Structures section — local .pdb models in /models, list + live 3Dmol viewer
 
-const TYPE_LABELS = { protein: 'protein', polymer: 'polymer', nucleic: 'nucleic', composite: 'composite' };
+const TYPE_LABELS = { protein: 'protein', polymer: 'polymer', nucleic: 'nucleic acid', composite: 'composite' };
 
-function ModelsPane({ initialModelId = null, onInitialModelApplied }) {
+function Structures({ focus }) {
   const models = window.PROFILE.models || [];
-  const [selectedId, setSelectedId] = React.useState(
-    initialModelId || models[0]?.id || null
-  );
+  const [selectedId, setSelectedId] = React.useState(models[0]?.id || null);
   const selected = models.find(m => m.id === selectedId) || null;
+  const idx = models.findIndex(m => m.id === selectedId);
 
   React.useEffect(() => {
-    if (!initialModelId) return;
-    if (models.some(m => m.id === initialModelId)) {
-      setSelectedId(initialModelId);
-    }
-    onInitialModelApplied?.();
-  }, [initialModelId]);
+    if (focus && models.some(m => m.id === focus.id)) setSelectedId(focus.id);
+  }, [focus]);
 
   return (
-    <section className="pane models-pane">
-      <div className="pane-head">
-        <h2>Models</h2>
-        <span className="pane-sub">Structures and designs · {models.length} entries</span>
-      </div>
+    <section id="structures" className="sec" data-section="structures">
+      <div className="wrap">
+        <SectionHead
+          num="03"
+          label="Structures"
+          title={['Models from the bench, ', { em: 'rendered live.' }]}
+          aside="Systems I built for simulation, from a designed enzyme to cellulose–graphene composites. Pick one; drag to rotate, scroll to zoom."
+        />
 
-      <div className="models-split">
-        <ul className="models-list">
-          {models.map((m, i) => (
-            <li
-              key={m.id}
-              className={`models-row ${selectedId === m.id ? 'on' : ''}`}
-              onClick={() => setSelectedId(m.id)}
-            >
-              <div className="models-row-num">{String(i + 1).padStart(2, '0')}</div>
-              <div className="models-row-body">
-                <div className="models-row-name">{m.name}</div>
-                {m.type && <span className={`models-type-badge type-${m.type}`}>{TYPE_LABELS[m.type]}</span>}
-              </div>
-              <div className="models-row-arrow">›</div>
-            </li>
-          ))}
-        </ul>
+        <div className="st-grid">
+          <ol className="st-list">
+            {models.map((m, i) => (
+              <li key={m.id}>
+                <button
+                  className={`st-row ${selectedId === m.id ? 'on' : ''}`}
+                  aria-pressed={selectedId === m.id}
+                  onClick={() => setSelectedId(m.id)}
+                >
+                  <span className="st-num">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="st-name">{m.name}</span>
+                  <span className="st-type">{TYPE_LABELS[m.type] || m.type}</span>
+                </button>
+              </li>
+            ))}
+          </ol>
 
-        <div className="models-viewer-col">
-          {selected
-            ? <ModelViewer key={selected.id} model={selected} />
-            : <div className="models-empty">Select a model from the list to view.</div>}
+          <figure className="st-fig">
+            <Lazy minHeight={560}>
+              {selected && <ModelViewer key={selected.id} model={selected} />}
+            </Lazy>
+            {selected && (
+              <figcaption className="fig-cap">
+                <span className="cap-no">Fig. 3.{idx + 1}</span>
+                <span><b>{selected.name}.</b> {selected.desc} <span className="cap-origin">{selected.origin}</span></span>
+              </figcaption>
+            )}
+          </figure>
         </div>
       </div>
     </section>
@@ -58,55 +61,39 @@ function ModelViewer({ model }) {
   const viewerRef = React.useRef(null);
   const [renderStyle, setRenderStyle] = React.useState(model.defaultStyle || 'stick');
   const [colorMode, setColorMode] = React.useState('spectrum');
-  const [spin, setSpin] = React.useState(true);
+  const [spin, setSpin] = React.useState(!REDUCED_MOTION);
   const [meta, setMeta] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
 
-  // init viewer
   React.useEffect(() => {
     if (!window.$3Dmol || !hostRef.current) return;
-    const v = window.$3Dmol.createViewer(hostRef.current, {
-      backgroundColor: 'rgba(0,0,0,0)',
-      antialias: true,
-    });
+    const v = window.$3Dmol.createViewer(hostRef.current, { backgroundColor: 'rgba(0,0,0,0)', antialias: true });
     viewerRef.current = v;
     return () => { try { v.clear(); } catch (e) {} };
   }, []);
 
-  // load PDB
   React.useEffect(() => {
     const v = viewerRef.current;
     if (!v || !model) return;
     let cancelled = false;
-    setLoading(true);
-    setError(null);
-    setMeta(null);
+    setLoading(true); setError(null); setMeta(null);
     v.clear();
     fetch(model.file)
-      .then(r => {
-        if (!r.ok) throw new Error(`couldn't load ${model.file}`);
-        return r.text();
-      })
+      .then(r => { if (!r.ok) throw new Error(`couldn't load ${model.file}`); return r.text(); })
       .then(text => {
         if (cancelled) return;
         v.addModel(text, 'pdb');
         window.applyMolStyle(v, renderStyle, colorMode);
-        v.zoomTo();
-        v.render();
+        v.zoomTo(); v.render();
         if (spin) v.spin('y', 0.4);
         setMeta(parseModelMeta(text));
         setLoading(false);
       })
-      .catch(err => {
-        if (cancelled) return;
-        setError(err.message);
-        setLoading(false);
-      });
+      .catch(err => { if (!cancelled) { setError(err.message); setLoading(false); } });
     return () => { cancelled = true; };
   }, [model]);
 
-  // restyle
   React.useEffect(() => {
     const v = viewerRef.current;
     if (!v || loading) return;
@@ -121,87 +108,83 @@ function ModelViewer({ model }) {
   }, [spin, loading]);
 
   return (
-    <div className="model-viewer">
-      <div className="model-viewer-head">
-        <span className="dot dot-r" /><span className="dot dot-y" /><span className="dot dot-g" />
-        <span className="th-vfile">{model.file}</span>
-        <span className={`th-status ${loading ? 'loading' : error ? 'err' : 'ok'}`}>
-          {loading ? '● loading' : error ? '● error' : '● ready'}
+    <div className="mv">
+      <div className="mv-head">
+        <span className="mv-file">{model.file}</span>
+        <span className={`status ${loading ? 'loading' : error ? 'err' : 'ok'}`}>
+          {loading ? 'loading' : error ? 'error' : 'ready'}
         </span>
       </div>
-      <div className="model-viewer-body">
+      <div className="mv-body">
         {loading && !error && (
-          <div className="model-loading">
-            <div className="model-loading-spinner" />
-            <div className="model-loading-text">loading {model.file.split('/').pop()}</div>
+          <div className="mv-loading">
+            <span className="bar" />
+            <span>reading {model.file.split('/').pop()}</span>
           </div>
         )}
-        <div ref={hostRef} className="model-viewer-canvas" />
+        <div ref={hostRef} className="mv-canvas" />
         {error && (
-          <div className="model-error">
-            <div className="model-error-title">missing file</div>
-            <div className="model-error-msg">{error}</div>
-            <div className="model-error-hint">
-              expected at <code>{model.file}</code>
-            </div>
+          <div className="mv-error">
+            <b>missing file</b>
+            <span>{error}</span>
           </div>
         )}
-        {!error && (
-          <div className="th-meta model-meta">
-            <div className="model-meta-header">
-              <div className="th-meta-title">{model.name}</div>
-              {model.origin && <div className="model-meta-origin">{model.origin}</div>}
-            </div>
-            {model.desc && <div className="model-meta-desc">{model.desc}</div>}
-            {meta && (
-              <div className="model-meta-stats">
-                <div className="th-meta-row"><span>chains</span><b>{meta.chains.join(', ') || '—'}</b></div>
-                <div className="th-meta-row"><span>residues</span><b>{meta.residues}</b></div>
-                <div className="th-meta-row"><span>atoms</span><b>{meta.atoms.toLocaleString()}</b></div>
-              </div>
-            )}
-          </div>
+        {meta && (
+          <dl className="hud-meta">
+            <div><dt>chains</dt><dd>{meta.chains.join(', ') || '—'}</dd></div>
+            <div><dt>residues</dt><dd>{meta.residues.toLocaleString()}</dd></div>
+            <div><dt>atoms</dt><dd>{meta.atoms.toLocaleString()}</dd></div>
+          </dl>
         )}
-        <div className="th-controls model-controls">
-          <div className="th-ctl-group">
-            <span className="th-ctl-label">style</span>
-            {['cartoon','stick','sphere','line'].map(s => (
-              <button key={s} className={`th-pill ${renderStyle===s?'on':''}`} onClick={() => setRenderStyle(s)}>{s}</button>
-            ))}
-          </div>
-          <div className="th-ctl-group">
-            <span className="th-ctl-label">color</span>
-            {['spectrum','chain','amber','ssPyMOL'].map(c => (
-              <button key={c} className={`th-pill ${colorMode===c?'on':''}`} onClick={() => setColorMode(c)}>{c}</button>
-            ))}
-          </div>
-          <div className="th-ctl-group">
-            <button className={`th-pill ${spin?'on':''}`} onClick={() => setSpin(s=>!s)}>↻ spin</button>
-            <button className="th-pill" onClick={() => { viewerRef.current?.zoomTo(); viewerRef.current?.render(); }}>⤢ reset</button>
-          </div>
-        </div>
+        <ViewerControls
+          style={renderStyle} setStyle={setRenderStyle}
+          color={colorMode} setColor={setColorMode}
+          spin={spin} setSpin={setSpin}
+          onReset={() => { viewerRef.current?.zoomTo(); viewerRef.current?.render(); }}
+        />
+      </div>
+    </div>
+  );
+}
+
+// Shared control strip for both 3D viewers
+function ViewerControls({ style, setStyle, color, setColor, spin, setSpin, onReset, extra }) {
+  return (
+    <div className="vc">
+      <div className="vc-g">
+        <span className="vc-k">style</span>
+        {['cartoon', 'stick', 'sphere', 'line'].map(s => (
+          <button key={s} className={`vc-b ${style === s ? 'on' : ''}`} onClick={() => setStyle(s)}>{s}</button>
+        ))}
+      </div>
+      <div className="vc-g">
+        <span className="vc-k">color</span>
+        {['spectrum', 'chain', 'amber', 'ssPyMOL'].map(c => (
+          <button key={c} className={`vc-b ${color === c ? 'on' : ''}`} onClick={() => setColor(c)}>{c}</button>
+        ))}
+      </div>
+      <div className="vc-g">
+        <button className={`vc-b ${spin ? 'on' : ''}`} onClick={() => setSpin(s => !s)}>spin</button>
+        {extra}
+        <button className="vc-b" onClick={onReset}>reset</button>
       </div>
     </div>
   );
 }
 
 function parseModelMeta(pdb) {
-  const lines = pdb.split('\n');
   const chains = new Set();
   const resKey = new Set();
   let atoms = 0;
-  for (const l of lines) {
+  for (const l of pdb.split('\n')) {
     if (l.startsWith('ATOM') || l.startsWith('HETATM')) {
       atoms++;
       const chain = l[21];
       if (chain && chain !== ' ') chains.add(chain);
-      const resi = l.slice(22, 27).trim();
-      resKey.add(`${chain}|${resi}`);
+      resKey.add(`${chain}|${l.slice(22, 27).trim()}`);
     }
   }
   return { chains: [...chains].sort(), residues: resKey.size, atoms };
 }
 
-window.ModelsPane = ModelsPane;
-
-
+Object.assign(window, { Structures, ModelViewer, ViewerControls });

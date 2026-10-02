@@ -1,4 +1,4 @@
-// Interactive structure viewer — 3Dmol canvas + a small command console
+// Lab console — 3Dmol viewer for any RCSB entry + a small command shell
 
 // Quick-load structures
 const FAV_PDBS = [
@@ -17,8 +17,8 @@ const COMMAND_HELP = [
   { cmd: 'whoami', desc: 'who is this?' },
   { cmd: 'about', desc: 'short bio' },
   { cmd: 'projects', desc: 'list research projects' },
-  { cmd: 'cv', desc: 'open the CV page' },
-  { cmd: 'goto <page>', desc: 'home | projects | models | cv' },
+  { cmd: 'cv', desc: 'jump to the CV' },
+  { cmd: 'goto <section>', desc: 'home | about | work | structures | cv | contact' },
   { cmd: 'open <id>', desc: 'open a project (e.g. open sbxat)' },
   { cmd: 'contact', desc: 'email · github · linkedin' },
   { cmd: 'load <pdb>', desc: 'load a 4-character PDB id (e.g. load 1btl)' },
@@ -66,7 +66,7 @@ function StructureViewer({ initialStructure = '1BTL', onNavigate, onOpenProject 
   const [pdbId, setPdbId] = React.useState(initialStructure.toUpperCase());
   const [renderStyle, setRenderStyle] = React.useState('cartoon');
   const [colorMode, setColorMode] = React.useState('spectrum');
-  const [spin, setSpin] = React.useState(true);
+  const [spin, setSpin] = React.useState(!REDUCED_MOTION);
   const [meta, setMeta] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
@@ -246,12 +246,14 @@ function StructureViewer({ initialStructure = '1BTL', onNavigate, onOpenProject 
           .forEach(c => log('out', `  ${c.cmd.padEnd(20)} ${c.desc}`));
         break;
       case 'cv':
-        if (onNavigate) { onNavigate('cv'); log('ok', 'opening cv…'); }
+        if (onNavigate) { onNavigate('cv'); log('ok', 'scrolling to cv…'); }
         else log('err', 'navigation unavailable here');
         break;
       case 'goto': {
-        const pages = ['home', 'projects', 'models', 'cv'];
-        const dest = (rest[0] || '').toLowerCase();
+        const pages = ['home', 'about', 'work', 'structures', 'console', 'cv', 'contact'];
+        const aliases = { projects: 'work', models: 'structures', top: 'home' };
+        const raw = (rest[0] || '').toLowerCase();
+        const dest = aliases[raw] || raw;
         if (!pages.includes(dest)) { log('err', `goto: ${pages.join(' | ')}`); break; }
         if (onNavigate) { onNavigate(dest); log('ok', `→ ${dest}`); }
         else log('err', 'navigation unavailable here');
@@ -426,127 +428,106 @@ function StructureViewer({ initialStructure = '1BTL', onNavigate, onOpenProject 
 
   return (
     <div className="th-shell">
-      {/* viewer */}
       <div className="th-viewer">
-        <div className="th-viewer-head">
-          <span className="dot dot-r" /><span className="dot dot-y" /><span className="dot dot-g" />
-          <span className="th-vfile">{activeModel ? activeModel.file : `rcsb.org / ${pdbId.toLowerCase()}.pdb`}</span>
-          <span className={`th-status ${loading ? 'loading' : error ? 'err' : 'ok'}`}>
-            {loading ? '● loading' : error ? '● error' : '● ready'}
+        <div className="th-head">
+          <span className="th-file">{activeModel ? activeModel.file : `rcsb.org/${pdbId.toLowerCase()}.pdb`}</span>
+          <span className={`status ${loading ? 'loading' : error ? 'err' : 'ok'}`}>
+            {loading ? 'loading' : error ? 'error' : 'ready'}
           </span>
         </div>
 
-        {/* direct PDB input bar */}
-        <form className="th-pdb-bar" onSubmit={submitPdbField}>
-          <span className="th-pdb-label">PDB</span>
-          <input
-            className="th-pdb-input"
-            value={pdbField}
-            onChange={e => setPdbField(e.target.value.toUpperCase().slice(0,4))}
-            maxLength={4}
-            spellCheck={false}
-            placeholder="e.g. 1BTL"
-            aria-label="PDB identifier"
-          />
-          <button type="submit" className="th-pdb-go">load</button>
-          <span className="th-pdb-favs-label">favorites:</span>
-          <div className="th-pdb-favs">
+        <form className="th-bar" onSubmit={submitPdbField}>
+          <label className="th-field">
+            <span className="th-field-k">PDB</span>
+            <input
+              value={pdbField}
+              onChange={e => setPdbField(e.target.value.toUpperCase().slice(0, 4))}
+              maxLength={4}
+              spellCheck={false}
+              placeholder="1BTL"
+              aria-label="PDB identifier"
+            />
+            <button type="submit">load ↵</button>
+          </label>
+          <div className="th-chips">
             {FAV_PDBS.map(f => (
               <button
                 type="button"
                 key={f.id}
-                className={`th-pdb-fav ${!activeModel && pdbId === f.id ? 'on' : ''}`}
+                className={`chip ${!activeModel && pdbId === f.id ? 'on' : ''}`}
                 onClick={() => loadPdb(f.id)}
-                title={f.note ? `load ${f.id} — ${f.note}` : `load ${f.id}`}
+                title={`load ${f.id}`}
               >
                 {f.id}
               </button>
             ))}
+            {myModels.length > 0 && <span className="th-chips-sep" aria-hidden="true" />}
+            {myModels.map(m => (
+              <button
+                type="button"
+                key={m.id}
+                className={`chip chip-mine ${activeModel?.id === m.id ? 'on' : ''}`}
+                onClick={() => loadMyModel(m)}
+                title={`load ${m.name}`}
+              >
+                {m.name}
+              </button>
+            ))}
           </div>
-          {myModels.length > 0 && (
-            <>
-              <span className="th-pdb-favs-label">my models:</span>
-              <div className="th-pdb-favs">
-                {myModels.map(m => (
-                  <button
-                    type="button"
-                    key={m.id}
-                    className={`th-pdb-fav th-pdb-mine ${activeModel?.id === m.id ? 'on' : ''}`}
-                    onClick={() => loadMyModel(m)}
-                    title={`load ${m.name}`}
-                  >
-                    {m.name}
-                  </button>
-                ))}
-              </div>
-            </>
-          )}
         </form>
 
-        <div className="th-viewer-body">
-          <div ref={viewerHostRef} className="th-viewer-canvas" />
+        <div className="th-body">
+          <div ref={viewerHostRef} className="th-canvas" />
           {meta && !loading && (
-            <div className="th-meta">
-              {meta.local && meta.name && <div className="th-meta-title">{meta.name}</div>}
-              {!meta.local && meta.title && <div className="th-meta-title">{meta.title.slice(0, 80)}</div>}
+            <dl className="hud-meta th-meta">
+              <div className="hud-title">{meta.local ? meta.name : (meta.title || meta.id).slice(0, 80)}</div>
               {meta.local
-                ? <div className="th-meta-row"><span>model</span><b>mine</b></div>
-                : <div className="th-meta-row"><span>pdb</span><b>{meta.id}</b></div>}
-              <div className="th-meta-row"><span>chains</span><b>{meta.chains.join(', ') || '—'}</b></div>
-              <div className="th-meta-row"><span>residues</span><b>{meta.residues}</b></div>
-              <div className="th-meta-row"><span>atoms</span><b>{meta.atoms.toLocaleString()}</b></div>
-              {meta.resolution && <div className="th-meta-row"><span>resolution</span><b>{meta.resolution} Å</b></div>}
-              {meta.ligands.length > 0 && <div className="th-meta-row"><span>ligands</span><b>{meta.ligands.slice(0,4).join(', ')}</b></div>}
-              {!meta.local && <a className="th-meta-link" href={`https://www.rcsb.org/structure/${meta.id}`} target="_blank" rel="noreferrer">open on rcsb.org ↗</a>}
-            </div>
+                ? <div><dt>model</dt><dd>mine</dd></div>
+                : <div><dt>pdb</dt><dd>{meta.id}</dd></div>}
+              <div><dt>chains</dt><dd>{meta.chains.join(', ') || '—'}</dd></div>
+              <div><dt>residues</dt><dd>{meta.residues.toLocaleString()}</dd></div>
+              <div><dt>atoms</dt><dd>{meta.atoms.toLocaleString()}</dd></div>
+              {meta.resolution && <div><dt>resolution</dt><dd>{meta.resolution} Å</dd></div>}
+              {meta.ligands.length > 0 && <div><dt>ligands</dt><dd>{meta.ligands.slice(0, 4).join(', ')}</dd></div>}
+              {!meta.local && <a className="hud-link" href={`https://www.rcsb.org/structure/${meta.id}`} target="_blank" rel="noreferrer">rcsb.org ↗</a>}
+            </dl>
           )}
-          <div className="th-controls">
-            <div className="th-ctl-group">
-              <span className="th-ctl-label">style</span>
-              {STYLES.map(s => (
-                <button key={s} className={`th-pill ${renderStyle===s?'on':''}`} onClick={() => setRenderStyle(s)}>{s}</button>
-              ))}
-            </div>
-            <div className="th-ctl-group">
-              <span className="th-ctl-label">color</span>
-              {['spectrum','chain','amber','ssPyMOL'].map(c => (
-                <button key={c} className={`th-pill ${colorMode===c?'on':''}`} onClick={() => setColorMode(c)}>{c}</button>
-              ))}
-            </div>
-            <div className="th-ctl-group">
-              <button className={`th-pill ${spin?'on':''}`} onClick={() => setSpin(s=>!s)}>↻ spin</button>
-              <button className={`th-pill ${measureMode?'on':''}`} onClick={() => {
+          <ViewerControls
+            style={renderStyle} setStyle={setRenderStyle}
+            color={colorMode} setColor={setColorMode}
+            spin={spin} setSpin={setSpin}
+            onReset={() => { viewerRef.current?.zoomTo(); viewerRef.current?.render(); }}
+            extra={
+              <button className={`vc-b ${measureMode ? 'on' : ''}`} onClick={() => {
                 setMeasureMode(m => {
                   const next = !m;
-                  if (next) log('sys','measure: pick atom 1/2 (click in viewer)');
+                  if (next) log('sys', 'measure: pick atom 1/2 (click in viewer)');
                   return next;
                 });
-              }}>⊹ measure</button>
-              <button className="th-pill" onClick={() => { viewerRef.current?.zoomTo(); viewerRef.current?.render(); }}>⤢ reset</button>
-            </div>
-          </div>
+              }}>measure</button>
+            }
+          />
         </div>
       </div>
 
-      {/* console */}
-      <div className="th-shell-pane">
-        <div className="th-shell-head">
-          <span className="dot dot-r" /><span className="dot dot-y" /><span className="dot dot-g" />
-          <span className="th-vfile">console</span>
-          <span className="th-shell-hint">try <code>whoami</code> · <code>open sbxat</code> · <code>random</code> · <code>tab</code> complete</span>
+      <div className="th-console">
+        <div className="th-head">
+          <span className="th-file">aakash@nlr-golden: ~/structures</span>
+          <span className="th-hint"><kbd>tab</kbd> complete · <kbd>↑</kbd> history</span>
         </div>
         <div className="th-log" ref={logRef} onClick={() => { const i = logRef.current?.querySelector('input'); i?.focus(); }}>
           {logLines.map((l, i) => (
             <div key={i} className={`th-line th-${l.kind}`}>{l.text}</div>
           ))}
           <div className="th-line th-input">
-            <span className="th-prompt">&gt;</span>
+            <span className="th-prompt">❯</span>
             <input
               value={input}
               onChange={e => setInput(e.target.value)}
               onKeyDown={onKey}
               spellCheck={false}
-              placeholder={measureMode ? 'measure mode — click atoms in viewer' : "type 'help'"}
+              aria-label="Console command"
+              placeholder={measureMode ? 'measure mode — click atoms in the viewer' : "type 'help'"}
             />
           </div>
         </div>

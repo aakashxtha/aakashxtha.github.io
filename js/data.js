@@ -45,6 +45,23 @@ window.PROFILE = {
     "Designing a brand-new protein from scratch used to be science fiction. Now it's a Tuesday.",
   ],
 
+  // Headline numbers on the home page — each one is backed by a project below
+  stats: [
+    { value: "~3 µs", label: "of all-atom MD to explain one enzyme's sugar-donor switch", project: "sbxat" },
+    { value: "500+", label: "TEM-1 β-lactamase variants screened through pyrotini", project: "tem1" },
+    { value: "20+", label: "macrocyclic peptide binders against Ebola VP40, sent to synthesis", project: "macrocycle" },
+    { value: "96", label: "tests behind sgsim, a GPU condensate engine written from scratch", project: "sgsim" },
+  ],
+
+  heroModel: {
+    file: "models/tem1-design-44A.pdb",
+    name: "TEM-1 β-lactamase",
+    variant: "design 44A",
+    project: "tem1",
+  },
+
+  coords: "25.76° N, 80.19° W",
+
   highlightedTools: ["RFdiffusion", "ProteinMPNN", "Latent-X", "PyRosetta"],
 
   statusTools: ["AMBER", "CHARMM", "GROMACS", "NAMD", "Python", "MATLAB", "HPC"],

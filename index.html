@@ -12,7 +12,7 @@
 <!-- Open Graph -->
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Aakash Shrestha — Computational Protein Design" />
-<meta property="og:description" content="Biomedical engineer working on computational protein design, molecular dynamics, and research software. Live, interactive, terminal-themed portfolio." />
+<meta property="og:description" content="Biomedical engineer working on computational protein design, molecular dynamics, and research software. Live molecular figures, an interactive structure console, and the projects behind them." />
 <meta property="og:url" content="https://aakashxtha.github.io/" />
 <meta property="og:image" content="https://aakashxtha.github.io/img/og.png" />
 <meta property="og:image:width" content="1200" />
@@ -25,7 +25,11 @@
 <meta name="twitter:image" content="https://aakashxtha.github.io/img/og.png" />
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%230a0a0a'/><text x='16' y='22' font-family='monospace' font-size='15' font-weight='700' text-anchor='middle' fill='%23ffb454'>AS</text></svg>" />
-<link rel="stylesheet" href="style.css?v=30" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..600;1,6..72,200..600&family=IBM+Plex+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" />
+<link rel="preload" href="models/tem1-design-44A.pdb" as="fetch" crossorigin />
+<link rel="stylesheet" href="style.css?v=40" />
 
 <!-- React + Babel -->
 <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin="anonymous"></script>
@@ -37,12 +41,21 @@
 
 </head>
 <body>
+<div id="boot" aria-hidden="true">
+  <div class="boot-in">
+    <span class="boot-mark">AS</span>
+    <span class="boot-line"><i></i></span>
+    <span class="boot-txt">folding structures</span>
+  </div>
+</div>
 <div id="root"></div>
+<noscript><p style="padding:40px;font-family:monospace;color:#e8e6e1">Aakash Shrestha — computational protein design &amp; molecular dynamics. This site needs JavaScript; reach me at shresthaaakash678@gmail.com.</p></noscript>
 
-<script src="js/data.js?v=50"></script>
-<script type="text/babel" src="js/terminal.jsx?v=31"></script>
-<script type="text/babel" src="js/extra-panes.jsx?v=32"></script>
-<script type="text/babel" src="js/models-pane.jsx?v=21"></script>
-<script type="text/babel" src="js/app.jsx?v=24"></script>
+<script src="js/data.js?v=51"></script>
+<script type="text/babel" src="js/fx.jsx?v=1"></script>
+<script type="text/babel" src="js/terminal.jsx?v=40"></script>
+<script type="text/babel" src="js/models-pane.jsx?v=40"></script>
+<script type="text/babel" src="js/sections.jsx?v=1"></script>
+<script type="text/babel" src="js/app.jsx?v=40"></script>
 </body>
 </html>
